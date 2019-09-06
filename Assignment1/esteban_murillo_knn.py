@@ -1,26 +1,25 @@
 import math
 
-_attr_keyword = '@attribute'
 _data_folder = 'KEEL_data'
 
 
 def main():
-    #askForInput()
-    k = 5
-    fileName = "titanic-10-fold/titanic-10"
+    # askForInput()
+    k = 3
+    fileName = "pima-10-fold/pima-10"
     trainingDataSet = readData(fileName, True)
     testDataSet = readData(fileName, False)
     print("testDataSet:", testDataSet)
     print("trainingDataSet:", trainingDataSet)
-    distances = cosDistance(trainingDataSet, testDataSet)
-    print(len(distances))
-    print(len(distances[0]))
-    print("distances:", distances)
+    # distances = cosDistance(trainingDataSet, testDataSet)
+    # print(len(distances))
+    # print(len(distances[0]))
+    # print("distances:", distances)
 
-    rightPredictions = nearestNeighbor(distances, k)
-    print("rightPredictions:", rightPredictions, "out of", len(testDataSet))
-    accuracy = (rightPredictions / len(testDataSet)) * 100
-    print("accuracy:", accuracy)
+    # rightPredictions = nearestNeighbor(distances, k)
+    # print("rightPredictions:", rightPredictions, "out of", len(testDataSet))
+    # accuracy = (rightPredictions / len(testDataSet)) * 100
+    # print("accuracy:", accuracy)
 
 
 def askForInput():
@@ -40,7 +39,13 @@ def readData(fileName, isTrainingData):
         datafile = f.readlines()
         for line in datafile:
             if line[0] != '@':
-                data = [float(x) for x in line.split(",")]
+                try:
+                    data = [float(x) for x in line.split(",")]
+                except:
+                    data = line.split(",")
+                    for elem in data[:8]:
+                        #if not elem == data[-1]:
+                            data = float(elem)
                 dataSet.append(data)
 
     return dataSet
@@ -87,7 +92,7 @@ def nearestNeighbor(distances, k):
                 count1 += 1
             else:
                 count2 += 1
-        if count1 > count2:
+        if count1 >= count2:
             rightPredictions += 1
 
             omd.append(i)
