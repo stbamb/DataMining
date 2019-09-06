@@ -14,8 +14,8 @@ def main():
         askForInput()
 
     print(_file_name)
-    trainingDataSet = readData(_file_name, True)
-    testDataSet = readData(_file_name, False)
+    trainingDataSet = readData(_file_name, True, 1)
+    testDataSet = readData(_file_name, False, 1)
 
     if trainingDataSet == [] or testDataSet == []:
         print("One or more files could not be found.\n")
@@ -46,12 +46,12 @@ def askForInput():
             print(_invalid_option_msg)
 
 
-def readData(fileName, isTrainingData):
+def readData(fileName, isTrainingData, i):
     dataSet = []
     if isTrainingData:
-        fileName += "-1tra.dat"
+        fileName += "-" + i + "tra.dat"
     else:
-        fileName += "-1tst.dat"
+        fileName += "-" + i + "tst.dat"
     try:
         with open(fileName) as f:
             datafile = f.readlines()
