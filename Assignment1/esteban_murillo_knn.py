@@ -1,53 +1,71 @@
 import math
 
-_data_folder = 'KEEL_data'
+_k = 0
+_file_name = ''
+_data_folder = 'KEEL_data/'
+_invalid_option_msg = "That is not a valid option. Try again.\n"
 
 
 def main():
-    # askForInput()
-    k = 3
-    fileName = "pima-10-fold/pima-10"
-    trainingDataSet = readData(fileName, True)
-    testDataSet = readData(fileName, False)
+    option = menu()
+    #fileName = _data_folder + "pima-10-fold/pima-10"   # used only for debug purposes
+
+    if option == 1:
+        askForInput()
+
+    print(_file_name)
+    trainingDataSet = readData(_file_name, True)
+    testDataSet = readData(_file_name, False)
+
+    if trainingDataSet == [] or testDataSet == []:
+        print("One or more files could not be found.\n")
+        return
+
     print("testDataSet:", testDataSet)
     print("trainingDataSet:", trainingDataSet)
-    # distances = cosDistance(trainingDataSet, testDataSet)
-    # print(len(distances))
-    # print(len(distances[0]))
-    # print("distances:", distances)
+    distances = cosDistance(trainingDataSet, testDataSet)
+    print(len(distances))
+    print(len(distances[0]))
 
-    # rightPredictions = nearestNeighbor(distances, k)
-    # print("rightPredictions:", rightPredictions, "out of", len(testDataSet))
-    # accuracy = (rightPredictions / len(testDataSet)) * 100
-    # print("accuracy:", accuracy)
+    rightPredictions = nearestNeighbor(distances, _k)
+    print("rightPredictions:", rightPredictions, "out of", len(testDataSet))
+    accuracy = (rightPredictions / len(testDataSet)) * 100
+    print("accuracy:", accuracy)
 
 
 def askForInput():
-    fileName = input("Please enter the name of the dataset: ")
-    k = input("Please enter the value for k: ")
+    validOption = False
+    while not validOption:
+        try:
+            global _file_name
+            global _k
+            _file_name = input("Enter the name of the dataset you want to use: ")
+            _k = int(input("Enter the value of k: "))
+            validOption = not validOption
+        except:
+            print(_invalid_option_msg)
 
 
 def readData(fileName, isTrainingData):
     dataSet = []
-
     if isTrainingData:
         fileName += "-1tra.dat"
     else:
         fileName += "-1tst.dat"
-
-    with open(fileName) as f:
-        datafile = f.readlines()
-        for line in datafile:
-            if line[0] != '@':
-                try:
-                    data = [float(x) for x in line.split(",")]
-                except:
-                    data = line.split(",")
-                    for elem in data[:8]:
-                        #if not elem == data[-1]:
-                            data = float(elem)
-                dataSet.append(data)
-
+    try:
+        with open(fileName) as f:
+            datafile = f.readlines()
+            for line in datafile:
+                if line[0] != '@':
+                    try:
+                        data = [float(x) for x in line.split(",")]
+                    except ValueError:
+                        data = line.split(",")
+                        for i in range(len(data) - 1):
+                            data[i] = float(data[i])
+                    dataSet.append(data)
+    except:
+        return []
     return dataSet
 
 
@@ -80,8 +98,8 @@ def nearestNeighbor(distances, k):
     for i in range(len(distances)):
         distances[i] = mergesort(distances[i])
         distances[i] = distances[i][0:k]
-    print("distances:", distances)
-    omd = []
+    print("sortedDistances:", distances)
+    correctlyPredicted = []
     for i in range(len(distances)):
         instance = distances[i]
         expected = instance[0][1]
@@ -95,9 +113,9 @@ def nearestNeighbor(distances, k):
         if count1 >= count2:
             rightPredictions += 1
 
-            omd.append(i)
+            correctlyPredicted.append(i)
 
-    print("corrected predicted", omd)
+    print("correctly predicted", correctlyPredicted)
     return rightPredictions
 
 
@@ -134,6 +152,25 @@ def mergesort_aux(arr1, arr2):
         del arr2[0]
         n2 -= 1
     return result
+
+
+def menu():
+    option = 0
+    validOption = False
+    while not validOption:
+        try:
+            print("Experimenter. Please select an option:")
+            print("1. Run knn on a specific problem set")
+            print("2. Explore k values")
+            print("3. Run on all datasets")
+            option = int(input())
+            if 0 < option < 4:
+                validOption = not validOption
+            else:
+                print(_invalid_option_msg)
+        except ValueError:
+            print(_invalid_option_msg)
+    return option
 
 
 main()
