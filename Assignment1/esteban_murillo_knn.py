@@ -1,4 +1,5 @@
 import math
+import matplotlib.pyplot as plt
 
 _k = 0
 _debug = False
@@ -18,9 +19,25 @@ def main():
     if option == 1:
         runForSpecificK()
     elif option == 2:
-        runForAllK()
+        overallAccuracyForK = runForAllK()
+        overallAccuracyForK.reverse()
+        print(overallAccuracyForK)
+        plot(overallAccuracyForK)
     elif option == 3:
         runForAll()
+
+
+# Example taken from: https://pythonspot.com/matplotlib-bar-chart/
+# And modified to work accordingly
+def plot(values):
+    y_pos = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    xValues = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    plt.bar(y_pos, values, align="center", alpha=0.5)
+    plt.xticks(y_pos, xValues)
+    plt.ylabel("ACCURACY RATE %")
+    plt.xlabel("K VALUE")
+    plt.title("ACCURACY RATE DEPENDING ON K")
+    plt.show()
 
 
 def runForSpecificK():
@@ -53,6 +70,7 @@ def runForSpecificK():
 
 
 def runForAllK():
+    overallAccuracyForK = []
     for k in range(1, 11):
         overallAccuracy = 0
         for i in range(1, _max_files_per_fold + 1):
@@ -66,11 +84,13 @@ def runForAllK():
                 return "One or more files could not be found.\n"
 
             distances = calculateDistance(trainingDataSet, testDataSet)
-            # print("testDataSet:", testDataSet)
-            # print("trainingDataSet:", trainingDataSet)
-            # print(distances)
-            # print(len(distances))
-            # print(len(distances[0]))
+
+            if _debug:
+                print("testDataSet:", testDataSet)
+                print("trainingDataSet:", trainingDataSet)
+                print(distances)
+                print(len(distances))
+                print(len(distances[0]))
 
             rightPredictions = nearestNeighbor(distances, k)
             print("rightPredictions:", rightPredictions, "out of", len(testDataSet), "with k =", str(k))
@@ -80,7 +100,9 @@ def runForAllK():
             overallAccuracy += accuracy
 
         overallAccuracy /= _max_files_per_fold
+        overallAccuracyForK.append(overallAccuracy)
         print("overallAccuracy: " + str(overallAccuracy))
+    return overallAccuracyForK
 
 
 def runForAll():
