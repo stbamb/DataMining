@@ -1,57 +1,150 @@
 import math
 
 _k = 0
-_file_name = ''
-_data_folder = 'KEEL_data/'
+_file_name = ""
+_data_folder = "KEEL_data/"
 _invalid_option_msg = "That is not a valid option. Try again.\n"
+_max_files_per_fold = 10
+_default_distance_algorithm = "manhattanDistance"
+_data_folder_names = ["appendicitis-10-fold", "banana-10-fold", "magic-10-fold", "phoneme-10-fold",
+                      "pima-10-fold", "ring-10-fold", "sonar-10-fold", "spambase-10-fold",
+                      "titanic-10-fold", "twonorm-10-fold", "wdbc-10-fold"]
 
 
 def main():
     option = menu()
-    #fileName = _data_folder + "pima-10-fold/pima-10"   # used only for debug purposes
-
+    askForInput(option)
     if option == 1:
-        askForInput()
-
-    print(_file_name)
-    trainingDataSet = readData(_file_name, True, 1)
-    testDataSet = readData(_file_name, False, 1)
-
-    if trainingDataSet == [] or testDataSet == []:
-        print("One or more files could not be found.\n")
-        return
-
-    print("testDataSet:", testDataSet)
-    print("trainingDataSet:", trainingDataSet)
-    distances = cosDistance(trainingDataSet, testDataSet)
-    print(len(distances))
-    print(len(distances[0]))
-
-    rightPredictions = nearestNeighbor(distances, _k)
-    print("rightPredictions:", rightPredictions, "out of", len(testDataSet))
-    accuracy = (rightPredictions / len(testDataSet)) * 100
-    print("accuracy:", accuracy)
+        runForSpecificK()
+    elif option == 2:
+        runForAllK()
+    elif option == 3:
+        runForAll()
 
 
-def askForInput():
+def runForSpecificK():
+    overallAccuracy = 0
+    for i in range(1, _max_files_per_fold + 1):
+        trainingDataSet = readData(_file_name, True, i)
+        testDataSet = readData(_file_name, False, i)
+
+        if trainingDataSet == [] or testDataSet == []:
+            return "One or more files could not be found.\n"
+
+        distances = calculateDistance(trainingDataSet, testDataSet)
+        #print("testDataSet:", testDataSet)
+        #print("trainingDataSet:", trainingDataSet)
+        #print(distances)
+        #print(len(distances))
+        #print(len(distances[0]))
+
+        rightPredictions = nearestNeighbor(distances, _k)
+        print("rightPredictions:", rightPredictions, "out of", len(testDataSet), "with k =", str(_k))
+        accuracy = (rightPredictions / len(testDataSet)) * 100
+        print("accuracy:", accuracy, "with k =", str(_k))
+        print()
+        overallAccuracy += accuracy
+
+    overallAccuracy /= _max_files_per_fold
+    print("overallAccuracy:", overallAccuracy)
+
+
+def runForAllK():
+    for k in range(1, 11):
+        overallAccuracy = 0
+        for i in range(1, _max_files_per_fold + 1):
+
+            print("Testing for file", i, "of", _file_name)
+
+            trainingDataSet = readData(_file_name, True, i)
+            testDataSet = readData(_file_name, False, i)
+
+            if trainingDataSet == [] or testDataSet == []:
+                return "One or more files could not be found.\n"
+
+            distances = calculateDistance(trainingDataSet, testDataSet)
+            # print("testDataSet:", testDataSet)
+            # print("trainingDataSet:", trainingDataSet)
+            # print(distances)
+            # print(len(distances))
+            # print(len(distances[0]))
+
+            rightPredictions = nearestNeighbor(distances, k)
+            print("rightPredictions:", rightPredictions, "out of", len(testDataSet), "with k =", str(k))
+            accuracy = (rightPredictions / len(testDataSet)) * 100
+            print("accuracy:", accuracy, "with k =", str(k))
+            print()
+            overallAccuracy += accuracy
+
+        overallAccuracy /= _max_files_per_fold
+        print("overallAccuracy: " + str(overallAccuracy))
+
+
+def runForAll():
+    global _file_name
+    for i in range(len(_data_folder_names)):
+        _file_name = _data_folder + "/" + _data_folder_names[i] + "/" + getFileName(_data_folder_names[i])
+        print(_file_name)
+        overallAccuracy = 0
+        for j in range(1, _max_files_per_fold + 1):
+            trainingDataSet = readData(_file_name, True, j)
+            testDataSet = readData(_file_name, False, j)
+
+            if trainingDataSet == [] or testDataSet == []:
+                return "One or more files could not be found.\n"
+
+            distances = calculateDistance(trainingDataSet, testDataSet)
+            # print("testDataSet:", testDataSet)
+            # print("trainingDataSet:", trainingDataSet)
+            # print(distances)
+            # print(len(distances))
+            # print(len(distances[0]))
+
+            rightPredictions = nearestNeighbor(distances, _k)
+            print("rightPredictions:", rightPredictions, "out of", len(testDataSet), "with k =", str(_k))
+            accuracy = (rightPredictions / len(testDataSet)) * 100
+            print("accuracy:", accuracy, "with k =", str(_k))
+            print()
+            overallAccuracy += accuracy
+
+        overallAccuracy /= _max_files_per_fold
+        print("overallAccuracy:", overallAccuracy)
+
+
+def askForInput(option):
     validOption = False
-    while not validOption:
-        try:
-            global _file_name
-            global _k
-            _file_name = input("Enter the name of the dataset you want to use: ")
-            _k = int(input("Enter the value of k: "))
-            validOption = not validOption
-        except:
-            print(_invalid_option_msg)
+    global _file_name, _data_folder, _k
+    if option == 1:
+        while not validOption:
+            try:
+                _file_name = input("Enter the name of the dataset you want to use: ")
+                _k = int(input("Enter the value of k: "))
+                validOption = not validOption
+            except:
+                print(_invalid_option_msg)
+    elif option == 2:
+        while not validOption:
+            try:
+                _file_name = input("Enter the name of the dataset you want to use: ")
+                validOption = not validOption
+            except:
+                print(_invalid_option_msg)
+    elif option == 3:
+        while not validOption:
+            try:
+                _data_folder = input("Enter the name of the folder containing the subfolders for the folds: ")
+                _k = int(input("Enter the value of k: "))
+                validOption = not validOption
+            except:
+                print(_invalid_option_msg)
 
 
 def readData(fileName, isTrainingData, i):
     dataSet = []
     if isTrainingData:
-        fileName += "-" + i + "tra.dat"
+        fileName += "-" + str(i) + "tra.dat"
     else:
-        fileName += "-" + i + "tst.dat"
+        fileName += "-" + str(i) + "tst.dat"
     try:
         with open(fileName) as f:
             datafile = f.readlines()
@@ -69,8 +162,13 @@ def readData(fileName, isTrainingData, i):
     return dataSet
 
 
+def calculateDistance(trainingDataSet, testDataSet):
+    return manhattanDistance(trainingDataSet, testDataSet)
+
+
 def cosDistance(trainingDataSet, testDataSet):
     cosDistances = []
+
     for i in range(len(testDataSet)):
         distances = []
         A = testDataSet[i]
@@ -92,13 +190,30 @@ def cosDistance(trainingDataSet, testDataSet):
     return cosDistances
 
 
+def manhattanDistance(trainingDataSet, testDataSet):
+    manhattanDistances = []
+
+    for i in range(len(testDataSet)):
+        A = testDataSet[i]
+        distances = []
+        for j in range(len(trainingDataSet)):
+            B = trainingDataSet[j]
+            dist = 0
+            for k in range(len(A) - 1):
+                dist += abs(A[k] - B[k])
+            distances.append((dist, testDataSet[i][-1], trainingDataSet[j][-1]))
+        manhattanDistances.append(distances)
+
+    return manhattanDistances
+
+
 def nearestNeighbor(distances, k):
     rightPredictions = 0
 
     for i in range(len(distances)):
         distances[i] = mergesort(distances[i])
         distances[i] = distances[i][0:k]
-    print("sortedDistances:", distances)
+    #print("sortedDistances:", distances)
     correctlyPredicted = []
     for i in range(len(distances)):
         instance = distances[i]
@@ -115,8 +230,13 @@ def nearestNeighbor(distances, k):
 
             correctlyPredicted.append(i)
 
-    print("correctly predicted", correctlyPredicted)
+    #print("correctly predicted", correctlyPredicted)
     return rightPredictions
+
+
+def getFileName(folderName):
+    names = folderName.split("-")
+    return names[0] + "-" + names[1]
 
 
 def mergesort(arr):
