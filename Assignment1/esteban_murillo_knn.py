@@ -1,6 +1,7 @@
 import math
 
 _k = 0
+_debug = False
 _file_name = ""
 _data_folder = "KEEL_data/"
 _invalid_option_msg = "That is not a valid option. Try again.\n"
@@ -29,14 +30,16 @@ def runForSpecificK():
         testDataSet = readData(_file_name, False, i)
 
         if trainingDataSet == [] or testDataSet == []:
-            return "One or more files could not be found.\n"
+            print("One or more files could not be found.\n")
 
         distances = calculateDistance(trainingDataSet, testDataSet)
-        #print("testDataSet:", testDataSet)
-        #print("trainingDataSet:", trainingDataSet)
-        #print(distances)
-        #print(len(distances))
-        #print(len(distances[0]))
+
+        if _debug:
+            print("testDataSet:", testDataSet)
+            print("trainingDataSet:", trainingDataSet)
+            print(distances)
+            print(len(distances))
+            print(len(distances[0]))
 
         rightPredictions = nearestNeighbor(distances, _k)
         print("rightPredictions:", rightPredictions, "out of", len(testDataSet), "with k =", str(_k))
@@ -91,14 +94,16 @@ def runForAll():
             testDataSet = readData(_file_name, False, j)
 
             if trainingDataSet == [] or testDataSet == []:
-                return "One or more files could not be found.\n"
+                print("One or more files could not be found.\n")
 
             distances = calculateDistance(trainingDataSet, testDataSet)
-            # print("testDataSet:", testDataSet)
-            # print("trainingDataSet:", trainingDataSet)
-            # print(distances)
-            # print(len(distances))
-            # print(len(distances[0]))
+
+            if _debug:
+                print("testDataSet:", testDataSet)
+                print("trainingDataSet:", trainingDataSet)
+                print(distances)
+                print(len(distances))
+                print(len(distances[0]))
 
             rightPredictions = nearestNeighbor(distances, _k)
             print("rightPredictions:", rightPredictions, "out of", len(testDataSet), "with k =", str(_k))
@@ -213,7 +218,6 @@ def nearestNeighbor(distances, k):
     for i in range(len(distances)):
         distances[i] = mergesort(distances[i])
         distances[i] = distances[i][0:k]
-    #print("sortedDistances:", distances)
     correctlyPredicted = []
     for i in range(len(distances)):
         instance = distances[i]
@@ -230,7 +234,8 @@ def nearestNeighbor(distances, k):
 
             correctlyPredicted.append(i)
 
-    #print("correctly predicted", correctlyPredicted)
+    if _debug:
+        print("correctly predicted", correctlyPredicted)
     return rightPredictions
 
 
