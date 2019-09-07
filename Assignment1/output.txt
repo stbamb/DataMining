@@ -1,0 +1,362 @@
+C:\Users\stbam\DataMining\Assignment1\venv\Scripts\python.exe C:/Users/stbam/Desktop/WFU/DataMining/Assignment1/esteban_murillo_knn.py
+Experimenter. Please select an option:
+1. Run knn on a specific problem set
+2. Explore k values
+3. Run on all datasets
+3
+Enter the name of the folder containing the subfolders for the folds: KEEL_data
+Enter the value of k: 3
+KEEL_data/appendicitis-10-fold/appendicitis-10
+rightPredictions: 8 out of 11 with k = 3
+accuracy: 72.72727272727273 with k = 3
+
+rightPredictions: 9 out of 11 with k = 3
+accuracy: 81.81818181818183 with k = 3
+
+rightPredictions: 9 out of 11 with k = 3
+accuracy: 81.81818181818183 with k = 3
+
+rightPredictions: 10 out of 11 with k = 3
+accuracy: 90.9090909090909 with k = 3
+
+rightPredictions: 11 out of 11 with k = 3
+accuracy: 100.0 with k = 3
+
+rightPredictions: 7 out of 11 with k = 3
+accuracy: 63.63636363636363 with k = 3
+
+rightPredictions: 8 out of 10 with k = 3
+accuracy: 80.0 with k = 3
+
+rightPredictions: 9 out of 10 with k = 3
+accuracy: 90.0 with k = 3
+
+rightPredictions: 8 out of 10 with k = 3
+accuracy: 80.0 with k = 3
+
+rightPredictions: 10 out of 10 with k = 3
+accuracy: 100.0 with k = 3
+
+overallAccuracy: 84.0909090909091
+KEEL_data/banana-10-fold/banana-10
+rightPredictions: 460 out of 530 with k = 3
+accuracy: 86.79245283018868 with k = 3
+
+rightPredictions: 465 out of 530 with k = 3
+accuracy: 87.73584905660378 with k = 3
+
+rightPredictions: 464 out of 530 with k = 3
+accuracy: 87.54716981132076 with k = 3
+
+rightPredictions: 468 out of 530 with k = 3
+accuracy: 88.30188679245283 with k = 3
+
+rightPredictions: 472 out of 530 with k = 3
+accuracy: 89.05660377358491 with k = 3
+
+rightPredictions: 470 out of 530 with k = 3
+accuracy: 88.67924528301887 with k = 3
+
+rightPredictions: 474 out of 530 with k = 3
+accuracy: 89.43396226415095 with k = 3
+
+rightPredictions: 474 out of 530 with k = 3
+accuracy: 89.43396226415095 with k = 3
+
+rightPredictions: 474 out of 530 with k = 3
+accuracy: 89.43396226415095 with k = 3
+
+rightPredictions: 473 out of 530 with k = 3
+accuracy: 89.24528301886792 with k = 3
+
+overallAccuracy: 88.56603773584906
+KEEL_data/magic-10-fold/magic-10
+rightPredictions: 1529 out of 1902 with k = 3
+accuracy: 80.38906414300736 with k = 3
+
+rightPredictions: 1527 out of 1902 with k = 3
+accuracy: 80.28391167192429 with k = 3
+
+rightPredictions: 1523 out of 1902 with k = 3
+accuracy: 80.07360672975815 with k = 3
+
+rightPredictions: 1534 out of 1902 with k = 3
+accuracy: 80.65194532071503 with k = 3
+
+rightPredictions: 1516 out of 1902 with k = 3
+accuracy: 79.70557308096741 with k = 3
+
+rightPredictions: 1542 out of 1902 with k = 3
+accuracy: 81.07255520504731 with k = 3
+
+rightPredictions: 1529 out of 1902 with k = 3
+accuracy: 80.38906414300736 with k = 3
+
+rightPredictions: 1521 out of 1902 with k = 3
+accuracy: 79.96845425867508 with k = 3
+
+rightPredictions: 1546 out of 1902 with k = 3
+accuracy: 81.28286014721347 with k = 3
+
+rightPredictions: 1528 out of 1902 with k = 3
+accuracy: 80.33648790746582 with k = 3
+
+overallAccuracy: 80.41535226077812
+KEEL_data/phoneme-10-fold/phoneme-10
+rightPredictions: 489 out of 541 with k = 3
+accuracy: 90.38817005545286 with k = 3
+
+rightPredictions: 485 out of 541 with k = 3
+accuracy: 89.64879852125694 with k = 3
+
+rightPredictions: 489 out of 541 with k = 3
+accuracy: 90.38817005545286 with k = 3
+
+rightPredictions: 487 out of 541 with k = 3
+accuracy: 90.0184842883549 with k = 3
+
+rightPredictions: 470 out of 540 with k = 3
+accuracy: 87.03703703703704 with k = 3
+
+rightPredictions: 481 out of 540 with k = 3
+accuracy: 89.07407407407408 with k = 3
+
+rightPredictions: 475 out of 540 with k = 3
+accuracy: 87.96296296296296 with k = 3
+
+rightPredictions: 482 out of 540 with k = 3
+accuracy: 89.25925925925927 with k = 3
+
+rightPredictions: 476 out of 540 with k = 3
+accuracy: 88.14814814814815 with k = 3
+
+rightPredictions: 482 out of 540 with k = 3
+accuracy: 89.25925925925927 with k = 3
+
+overallAccuracy: 89.11843636612582
+KEEL_data/pima-10-fold/pima-10
+rightPredictions: 49 out of 77 with k = 3
+accuracy: 63.63636363636363 with k = 3
+
+rightPredictions: 49 out of 78 with k = 3
+accuracy: 62.82051282051282 with k = 3
+
+rightPredictions: 56 out of 76 with k = 3
+accuracy: 73.68421052631578 with k = 3
+
+rightPredictions: 53 out of 77 with k = 3
+accuracy: 68.83116883116884 with k = 3
+
+rightPredictions: 55 out of 77 with k = 3
+accuracy: 71.42857142857143 with k = 3
+
+rightPredictions: 53 out of 76 with k = 3
+accuracy: 69.73684210526315 with k = 3
+
+rightPredictions: 56 out of 77 with k = 3
+accuracy: 72.72727272727273 with k = 3
+
+rightPredictions: 54 out of 76 with k = 3
+accuracy: 71.05263157894737 with k = 3
+
+rightPredictions: 50 out of 77 with k = 3
+accuracy: 64.93506493506493 with k = 3
+
+rightPredictions: 53 out of 77 with k = 3
+accuracy: 68.83116883116884 with k = 3
+
+overallAccuracy: 68.76838074206496
+KEEL_data/ring-10-fold/ring-10
+rightPredictions: 498 out of 740 with k = 3
+accuracy: 67.29729729729729 with k = 3
+
+rightPredictions: 500 out of 740 with k = 3
+accuracy: 67.56756756756756 with k = 3
+
+rightPredictions: 506 out of 740 with k = 3
+accuracy: 68.37837837837839 with k = 3
+
+rightPredictions: 506 out of 740 with k = 3
+accuracy: 68.37837837837839 with k = 3
+
+rightPredictions: 507 out of 740 with k = 3
+accuracy: 68.51351351351352 with k = 3
+
+rightPredictions: 496 out of 740 with k = 3
+accuracy: 67.02702702702703 with k = 3
+
+rightPredictions: 498 out of 740 with k = 3
+accuracy: 67.29729729729729 with k = 3
+
+rightPredictions: 507 out of 740 with k = 3
+accuracy: 68.51351351351352 with k = 3
+
+rightPredictions: 512 out of 740 with k = 3
+accuracy: 69.1891891891892 with k = 3
+
+rightPredictions: 517 out of 740 with k = 3
+accuracy: 69.86486486486486 with k = 3
+
+overallAccuracy: 68.2027027027027
+KEEL_data/sonar-10-fold/sonar-10
+rightPredictions: 20 out of 21 with k = 3
+accuracy: 95.23809523809523 with k = 3
+
+rightPredictions: 19 out of 21 with k = 3
+accuracy: 90.47619047619048 with k = 3
+
+rightPredictions: 19 out of 21 with k = 3
+accuracy: 90.47619047619048 with k = 3
+
+rightPredictions: 17 out of 21 with k = 3
+accuracy: 80.95238095238095 with k = 3
+
+rightPredictions: 12 out of 21 with k = 3
+accuracy: 57.14285714285714 with k = 3
+
+rightPredictions: 18 out of 21 with k = 3
+accuracy: 85.71428571428571 with k = 3
+
+rightPredictions: 19 out of 21 with k = 3
+accuracy: 90.47619047619048 with k = 3
+
+rightPredictions: 19 out of 21 with k = 3
+accuracy: 90.47619047619048 with k = 3
+
+rightPredictions: 19 out of 20 with k = 3
+accuracy: 95.0 with k = 3
+
+rightPredictions: 13 out of 20 with k = 3
+accuracy: 65.0 with k = 3
+
+overallAccuracy: 84.0952380952381
+KEEL_data/spambase-10-fold/spambase-10
+rightPredictions: 391 out of 460 with k = 3
+accuracy: 85.0 with k = 3
+
+rightPredictions: 373 out of 460 with k = 3
+accuracy: 81.08695652173913 with k = 3
+
+rightPredictions: 383 out of 460 with k = 3
+accuracy: 83.26086956521739 with k = 3
+
+rightPredictions: 384 out of 460 with k = 3
+accuracy: 83.47826086956522 with k = 3
+
+rightPredictions: 390 out of 460 with k = 3
+accuracy: 84.78260869565217 with k = 3
+
+rightPredictions: 400 out of 460 with k = 3
+accuracy: 86.95652173913044 with k = 3
+
+rightPredictions: 392 out of 460 with k = 3
+accuracy: 85.21739130434783 with k = 3
+
+rightPredictions: 376 out of 459 with k = 3
+accuracy: 81.91721132897604 with k = 3
+
+rightPredictions: 391 out of 459 with k = 3
+accuracy: 85.18518518518519 with k = 3
+
+rightPredictions: 382 out of 459 with k = 3
+accuracy: 83.2244008714597 with k = 3
+
+overallAccuracy: 84.01094060812731
+KEEL_data/titanic-10-fold/titanic-10
+rightPredictions: 150 out of 221 with k = 3
+accuracy: 67.87330316742081 with k = 3
+
+rightPredictions: 155 out of 220 with k = 3
+accuracy: 70.45454545454545 with k = 3
+
+rightPredictions: 150 out of 220 with k = 3
+accuracy: 68.18181818181817 with k = 3
+
+rightPredictions: 152 out of 220 with k = 3
+accuracy: 69.0909090909091 with k = 3
+
+rightPredictions: 150 out of 220 with k = 3
+accuracy: 68.18181818181817 with k = 3
+
+rightPredictions: 153 out of 220 with k = 3
+accuracy: 69.54545454545455 with k = 3
+
+rightPredictions: 151 out of 220 with k = 3
+accuracy: 68.63636363636364 with k = 3
+
+rightPredictions: 152 out of 220 with k = 3
+accuracy: 69.0909090909091 with k = 3
+
+rightPredictions: 153 out of 220 with k = 3
+accuracy: 69.54545454545455 with k = 3
+
+rightPredictions: 154 out of 220 with k = 3
+accuracy: 70.0 with k = 3
+
+overallAccuracy: 69.06005758946935
+KEEL_data/twonorm-10-fold/twonorm-10
+rightPredictions: 703 out of 740 with k = 3
+accuracy: 95.0 with k = 3
+
+rightPredictions: 714 out of 740 with k = 3
+accuracy: 96.48648648648648 with k = 3
+
+rightPredictions: 705 out of 740 with k = 3
+accuracy: 95.27027027027027 with k = 3
+
+rightPredictions: 717 out of 740 with k = 3
+accuracy: 96.89189189189189 with k = 3
+
+rightPredictions: 713 out of 740 with k = 3
+accuracy: 96.35135135135135 with k = 3
+
+rightPredictions: 714 out of 740 with k = 3
+accuracy: 96.48648648648648 with k = 3
+
+rightPredictions: 721 out of 740 with k = 3
+accuracy: 97.43243243243244 with k = 3
+
+rightPredictions: 700 out of 740 with k = 3
+accuracy: 94.5945945945946 with k = 3
+
+rightPredictions: 721 out of 740 with k = 3
+accuracy: 97.43243243243244 with k = 3
+
+rightPredictions: 710 out of 740 with k = 3
+accuracy: 95.94594594594594 with k = 3
+
+overallAccuracy: 96.18918918918918
+KEEL_data/wdbc-10-fold/wdbc-10
+rightPredictions: 52 out of 57 with k = 3
+accuracy: 91.22807017543859 with k = 3
+
+rightPredictions: 54 out of 57 with k = 3
+accuracy: 94.73684210526315 with k = 3
+
+rightPredictions: 54 out of 57 with k = 3
+accuracy: 94.73684210526315 with k = 3
+
+rightPredictions: 52 out of 57 with k = 3
+accuracy: 91.22807017543859 with k = 3
+
+rightPredictions: 51 out of 57 with k = 3
+accuracy: 89.47368421052632 with k = 3
+
+rightPredictions: 56 out of 57 with k = 3
+accuracy: 98.24561403508771 with k = 3
+
+rightPredictions: 57 out of 57 with k = 3
+accuracy: 100.0 with k = 3
+
+rightPredictions: 54 out of 57 with k = 3
+accuracy: 94.73684210526315 with k = 3
+
+rightPredictions: 51 out of 57 with k = 3
+accuracy: 89.47368421052632 with k = 3
+
+rightPredictions: 51 out of 56 with k = 3
+accuracy: 91.07142857142857 with k = 3
+
+overallAccuracy: 93.49310776942356
+
+Process finished with exit code 0
