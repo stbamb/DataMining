@@ -1,0 +1,60 @@
+Instructions
+
+In this homework assignment, you will build upon Homework Assignment 1, and expand your application domain to image data. 
+For the purpose of this assignment, we will limit image data to jpeg files only.  You may use Pillow library (http://python-pillow.org/) 
+or any other Python library to process image data.
+
+More specifically, in this assignment, you will learn how to extract features from image data, classify them using kNN algorithm, 
+validate kNN classifier in five-fold experiments, and benchmark your implementation against existing Python kNN implementations and 
+against two other classification algorithms of your choice.
+
+Data collection
+
+You are to identify a public copyright-free source of labeled images of two classes, e.g. headshots vs. landscapes, cartoons vs. paintings, 
+dogs vs. cats, etc. You need to collect at least 50 images in each category. Store images on your local machines in two directories, 
+e.g. headshots and landscapes.
+
+Minimal Performance [0/100 - 60/100]
+
+First, you will automate the process of classifying images using an existing implementation of a kNN algorithm. 
+I expect that you will perform the following steps:
+
+Implement code in Python to extract features from images.  Some possible features, may be the average RGB values of the entire image, 
+the average number of edge pixels, etc. The input images may and will be of different dimensions, therefore, your choice of features 
+should not be dependent on the dimensions or the size of the images. Note, that you may need to pre-process the data to remove duplicates, 
+normalize or standardize the attributes. However, please, do not perform feature reduction.
+
+Use an existing kNN implementation in Python to evaluate the performance of the kNN algorithm for your image data set in five-fold cross-validation.
+
+Identify the best value for k for the kNN algorithm for your data set and report the average cross-validated accuracy and the running time.
+
+Baseline Performance [60/100 - 80/100 points]
+
+Validate your own implementation of kNN from Homework Assignment #1 using a five-fold cross-validation method.  
+In this part, I expect that you will perform the following steps:
+
+Partition image data set into five folds. Note that you need to implement the data partitioning from scratch.
+
+Perform the five-fold cross-validation of your kNN implementation to identify the best value of k. Report the values of k, 
+cross-validated accuracy, and the running time.
+
+Good Performance [80/100 - 95/100 points]
+
+In this part, you are asked to identify two other classification algorithms suitable for this data mining task. Find a Python library 
+that implements these algorithms.
+
+Estimate the performance (accuracy and running time) of these two algorithms and report them.
+
+Write a short report (maximum of 2 pages, including figures) summarizing the performance of your kNN implementation. 
+Compare and contrast with existing Python implementations of kNN and the two classification algorithms. 
+Analyze your results and support with figures. Submit a pdf of a LaTeX-formated report.
+
+Excellent [95/100 -100/100 points]
+
+You are to implement a greedy feature selection algorithm of your choice. Compare and contrast the results of the five-fold cross-validation of 
+your kNN with feature selection and your kNN with all of the features.
+
+Submission
+
+You will probably have several files associated with this assignment.  Please, zip all your files into one archive, label 
+it with your first and last name and submit to Sakai.
