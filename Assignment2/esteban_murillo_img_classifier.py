@@ -12,15 +12,16 @@ import os
 import random
 import numpy as np
 from PIL import Image
+from itertools import combinations
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import cross_val_score
 
 _image_file_extension = ".jpg"
 _folder1_image_type = "Insect"
 _folder2_image_type = "Ocean"
-_image_folder1 = "Insects/"
-_image_folder2 = "Ocean/"
-_max_num_of_k_tries = 10
+_image_folder1 = "InsectsTmp/"
+_image_folder2 = "OceanTmp/"
+_max_num_of_k_tries = 5
 _x_fold = 5
 _debug = False
 
@@ -30,11 +31,15 @@ def main():
     rgb_values = getRGBAttributesForAllFiles(images_names)
     labeled_data = shuffle(assignLabel(_image_folder1, _image_folder2, rgb_values))
     k_score_values = kFolding(labeled_data)
-    best_k_value = max(k_score_values)
-    best_k_value_index = k_score_values.index(best_k_value)
-
     print(k_score_values)
-    print("Best value with k = {} with a mean of {}".format(best_k_value_index + 1, best_k_value))
+    print(findBestKValue(k_score_values))
+
+    # Code for manual 5-fold begins
+
+    partitioned_data = partitionDataSet(images_names)
+    print(partitioned_data)
+    print()
+    getFoldsCombinations(partitioned_data)
 
 
 def kFolding(labeled_data):
@@ -56,20 +61,6 @@ def getSpecificsValues(labeled_data, desired_value):
     for i in range(len(labeled_data)):
         specific_values.append(labeled_data[i][desired_value])
     return specific_values
-
-
-def partitionDataSet(images_names):
-    size_per_fold = len(images_names) / _x_fold
-    partitioned_list = []
-    sub_fold = []
-
-    for i in range(len(images_names)):
-        sub_fold.append(images_names[i])
-        if i % size_per_fold == 9:
-            partitioned_list.append(sub_fold)
-            sub_fold = []
-
-    return partitioned_list
 
 
 def getRGBAttributesForAllFiles(images_names):
@@ -96,6 +87,35 @@ def getRGBAttributes(file_name):
             rgb[2] += b
 
     return tuple(rgb)
+
+
+def findBestKValue(k_score_values):
+    best_k_value = max(k_score_values)
+    best_k_value_index = k_score_values.index(best_k_value)
+    return "Best value with k = {} with a mean of {}".format(best_k_value_index + 1, best_k_value)
+
+
+def partitionDataSet(images_names):
+    size_per_fold = len(images_names) / _x_fold
+    partitioned_list = []
+    sub_fold = []
+
+    for i in range(len(images_names)):
+        sub_fold.append(images_names[i])
+        if i % size_per_fold == size_per_fold - 1:
+            partitioned_list.append(sub_fold)
+            sub_fold = []
+
+    return partitioned_list
+
+
+def getFoldsCombinations(partitioned_data):
+    comb = combinations(partitioned_data, 4)
+    for i in list(comb):
+        print(i)
+
+    for i in range(len(partitioned_data)):
+        print("This is the test set:", partitioned_data[-1 - i])
 
 
 def loadImages(_image_folder1, _image_folder2):
