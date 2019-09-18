@@ -12,45 +12,50 @@ import os
 import random
 import numpy as np
 from PIL import Image
-from sklearn import preprocessing
-from sklearn.model_selection import KFold
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import cross_val_score
 
-
-_image_folder1 = "InsectsTmp/"
-_image_folder2 = "OceanTmp/"
+_image_file_extension = ".jpg"
 _folder1_image_type = "Insect"
 _folder2_image_type = "Ocean"
-_image_file_extension = ".jpg"
+_image_folder1 = "Insects/"
+_image_folder2 = "Ocean/"
+_max_num_of_k_tries = 10
 _x_fold = 5
 _debug = False
 
 
 def main():
     images_names = loadImages(_image_folder1, _image_folder2)
-
-    rgb_values = []
-    for i in range(len(images_names)):
-        rgb_values.append(getAvgRGB(images_names[i]))
-    #print(rgbValues)
-
+    rgb_values = getRGBAttributesForAllFiles(images_names)
     labeled_data = shuffle(assignLabel(_image_folder1, _image_folder2, rgb_values))
-    print(labeled_data)
+    k_score_values = kFolding(labeled_data)
+    best_k_value = max(k_score_values)
+    best_k_value_index = k_score_values.index(best_k_value)
 
-    kFold(labeled_data)
+    print(k_score_values)
+    print("Best value with k = {} with a mean of {}".format(best_k_value_index + 1, best_k_value))
 
 
-def kFold(images_names):
-    data = np.asarray(images_names)
+def kFolding(labeled_data):
+    X = getSpecificsValues(labeled_data, 0)
+    y = getSpecificsValues(labeled_data, 1)
+    k_score_values = []
 
-    k_fold = KFold(_x_fold)
+    for k_neighbors in range(1, _max_num_of_k_tries + 1):
+        knn_cv = KNeighborsClassifier(k_neighbors)
+        cv_scores = cross_val_score(knn_cv, X, y, cv=_x_fold)
+        k_score_values.append(np.mean(cv_scores))
 
-    # enumerate splits
-    iteration = 1
-    for train, test in k_fold.split(data):
-        print("Model:", iteration)
-        print('train:\n %s, \ntest:\n %s' % (data[train], data[test]))
-        iteration += 1
+    return k_score_values
+
+
+# desired_value: 0 if you want to get the attributes of the image, 1 if you want to get the target
+def getSpecificsValues(labeled_data, desired_value):
+    specific_values = []
+    for i in range(len(labeled_data)):
+        specific_values.append(labeled_data[i][desired_value])
+    return specific_values
 
 
 def partitionDataSet(images_names):
@@ -67,14 +72,21 @@ def partitionDataSet(images_names):
     return partitioned_list
 
 
-def getAvgRGB(fileName):
+def getRGBAttributesForAllFiles(images_names):
+    rgb_values = []
+    for i in range(len(images_names)):
+        rgb_values.append(getRGBAttributes(images_names[i]))
+    return rgb_values
+
+
+def getRGBAttributes(file_name):
     try:
-        img = Image.open(fileName)
+        img = Image.open(file_name)
         img_data = img.load()
     except FileNotFoundError:
         return "Could not find image\n"
 
-    # [R, G, B, TotalPixels]
+    # [R, G, B]
     rgb = [0, 0, 0]
     for x in range(img.size[0]):
         for y in range(img.size[1]):
@@ -82,9 +94,8 @@ def getAvgRGB(fileName):
             rgb[0] += r
             rgb[1] += g
             rgb[2] += b
-            #rgb[3] += 1
 
-    return rgb
+    return tuple(rgb)
 
 
 def loadImages(_image_folder1, _image_folder2):
