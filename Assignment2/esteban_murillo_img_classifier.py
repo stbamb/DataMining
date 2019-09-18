@@ -12,7 +12,7 @@ import os
 import random
 import numpy as np
 from PIL import Image
-from numpy import array
+from sklearn import preprocessing
 from sklearn.model_selection import KFold
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -22,103 +22,99 @@ _image_folder2 = "OceanTmp/"
 _folder1_image_type = "Insect"
 _folder2_image_type = "Ocean"
 _image_file_extension = ".jpg"
-_psychonaut = "psychonaut" + _image_file_extension
-_x_fold = 3
+_x_fold = 5
 _debug = False
 
 
 def main():
-    imagesNames = loadImages(_image_folder1, _image_folder2)
-    #partitionedList = partitionDataSet(imagesNames)
-    print(imagesNames)
-    #print(partitionedList)
+    images_names = loadImages(_image_folder1, _image_folder2)
 
-    rgbValues = []
-    for i in range(len(imagesNames)):
-        rgbValues.append(getAvgRGB(imagesNames[i]))
-
+    rgb_values = []
+    for i in range(len(images_names)):
+        rgb_values.append(getAvgRGB(images_names[i]))
     #print(rgbValues)
 
-    #kFold(imagesNames)
+    labeled_data = shuffle(assignLabel(_image_folder1, _image_folder2, rgb_values))
+    print(labeled_data)
 
-    labeledData = shuffle(assignLabel(_image_folder1, _image_folder2, rgbValues))
-    print(labeledData)
+    kFold(labeled_data)
 
 
-def kFold(imagesNames):
-    data = np.asarray(imagesNames)
+def kFold(images_names):
+    data = np.asarray(images_names)
 
-    #data = array([0.1, 0.2, 0.3, 0.4, 0.5, 0.6])
-
-    kfold = KFold(_x_fold)
+    k_fold = KFold(_x_fold)
 
     # enumerate splits
-    for train, test in kfold.split(data):
-        print('train: %s, test: %s' % (data[train], data[test]))
+    iteration = 1
+    for train, test in k_fold.split(data):
+        print("Model:", iteration)
+        print('train:\n %s, \ntest:\n %s' % (data[train], data[test]))
+        iteration += 1
 
 
-def partitionDataSet(imagesNames):
-    sizePerFold = len(imagesNames) / _x_fold
-    partitionedList = []
-    subFold = []
+def partitionDataSet(images_names):
+    size_per_fold = len(images_names) / _x_fold
+    partitioned_list = []
+    sub_fold = []
 
-    for i in range(len(imagesNames)):
-        subFold.append(imagesNames[i])
-        if i % sizePerFold == 9:
-            partitionedList.append(subFold)
-            subFold = []
+    for i in range(len(images_names)):
+        sub_fold.append(images_names[i])
+        if i % size_per_fold == 9:
+            partitioned_list.append(sub_fold)
+            sub_fold = []
 
-    return partitionedList
+    return partitioned_list
 
 
 def getAvgRGB(fileName):
     try:
         img = Image.open(fileName)
-        imgData = img.load()
+        img_data = img.load()
     except FileNotFoundError:
         return "Could not find image\n"
 
     # [R, G, B, TotalPixels]
-    rgb = [0, 0, 0, 0]
+    rgb = [0, 0, 0]
     for x in range(img.size[0]):
         for y in range(img.size[1]):
-            r, g, b = imgData[x, y]
+            r, g, b = img_data[x, y]
             rgb[0] += r
             rgb[1] += g
             rgb[2] += b
-            rgb[3] += 1
+            #rgb[3] += 1
 
     return rgb
 
 
 def loadImages(_image_folder1, _image_folder2):
-    fullFilesNames = []
+    full_files_names = []
     directory = os.fsencode(_image_folder1)
 
     for file in os.listdir(directory):
-        fileName = os.fsdecode(file)
-        if fileName.endswith(_image_file_extension):
-            fullFilesNames.append(_image_folder1 + fileName)
+        file_name = os.fsdecode(file)
+        if file_name.endswith(_image_file_extension):
+            full_files_names.append(_image_folder1 + file_name)
 
     directory = os.fsencode(_image_folder2)
 
     for file in os.listdir(directory):
-        fileName = os.fsdecode(file)
-        if fileName.endswith(_image_file_extension):
-            fullFilesNames.append(_image_folder2 + fileName)
+        file_name = os.fsdecode(file)
+        if file_name.endswith(_image_file_extension):
+            full_files_names.append(_image_folder2 + file_name)
 
-    return fullFilesNames
+    return full_files_names
 
 
 def assignLabel(_image_folder1, _image_folder2, attributes):
-    labeledData = []
-    numFilesFolder1 = len([f for f in os.listdir(_image_folder1) if os.path.isfile(os.path.join(_image_folder1, f))])
+    labeled_data = []
+    num_files_folder1 = len([f for f in os.listdir(_image_folder1) if os.path.isfile(os.path.join(_image_folder1, f))])
     for i in range(len(attributes)):
-        if i < numFilesFolder1:
-            labeledData.append((attributes[i], _folder1_image_type))
+        if i < num_files_folder1:
+            labeled_data.append((attributes[i], _folder1_image_type))
         else:
-            labeledData.append((attributes[i], _folder2_image_type))
-    return labeledData
+            labeled_data.append((attributes[i], _folder2_image_type))
+    return labeled_data
 
 
 def shuffle(arr):
