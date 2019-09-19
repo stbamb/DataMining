@@ -34,7 +34,6 @@ def main():
     # Cross-Fold validation + KNeighborsClassifier (all implemented from scratch)
     partitioned_data = utils.partitionDataSet(labeled_data)
     complete_set = utils.getFoldsCombinations(partitioned_data)
-    print(complete_set)
     inhouse_KNN_k_score_values = inhouseKNN(complete_set)
     print(inhouse_KNN_k_score_values)
     print(utils.findBestKValue(inhouse_KNN_k_score_values))
@@ -44,28 +43,27 @@ def inhouseKNN(complete_set):
     default_distance_algorithm = inhouse_knn.manhattanDistance
     iterations = len(complete_set) // 2
     inhouse_KNN_k_score_values = []
-    print("complete_set:", len(complete_set))
 
     for k in range(1, global_vars.max_num_of_k_tries + 1):
         right_predictions = 0
+        total_guesses = 0
         for i in range(iterations):
             train_set = complete_set[i]
             test_set = complete_set[-1 - i]
             train_set = utils.joinTrainSet(train_set)
             distances = inhouse_knn.calculateDistance(default_distance_algorithm, train_set, test_set)
             right_predictions += inhouse_knn.kNN(distances, k)
-
-            print("distances:", distances)
+            total_guesses += len(test_set)
 
             if global_vars.debug:
                 print("train_set {}\n \ntest_set {}\n".format(train_set, test_set))
 
-        accuracy = right_predictions / len(complete_set)
+        accuracy = right_predictions / total_guesses
         inhouse_KNN_k_score_values.append(accuracy)
 
         if global_vars.debug:
             print("Right predictions {} out of {}. Total accuracy {}% with k = {}"
-                  .format(right_predictions, len(complete_set), accuracy, k))
+                  .format(right_predictions, total_guesses, accuracy, k))
 
     return inhouse_KNN_k_score_values
 
