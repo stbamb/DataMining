@@ -18,17 +18,22 @@ def loadImages(folder1, folder2):
     full_files_names = []
     directory = os.fsencode(folder1)
 
-    for file in os.listdir(directory):
-        file_name = os.fsdecode(file)
-        if file_name.endswith(global_vars.image_file_extension):
-            full_files_names.append(folder1 + file_name)
+    try:
+        for file in os.listdir(directory):
+            file_name = os.fsdecode(file)
+            if file_name.endswith(global_vars.image_file_extension):
+                full_files_names.append(folder1 + file_name)
 
-    directory = os.fsencode(folder2)
+        directory = os.fsencode(folder2)
 
-    for file in os.listdir(directory):
-        file_name = os.fsdecode(file)
-        if file_name.endswith(global_vars.image_file_extension):
-            full_files_names.append(folder2 + file_name)
+        for file in os.listdir(directory):
+            file_name = os.fsdecode(file)
+            if file_name.endswith(global_vars.image_file_extension):
+                full_files_names.append(folder2 + file_name)
+
+    except FileNotFoundError:
+        print("Directory not found")
+        exit(0)
 
     return full_files_names
 
