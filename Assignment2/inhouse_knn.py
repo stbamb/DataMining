@@ -57,7 +57,7 @@ def manhattanDistance(training_data_set, test_data_set):
     return manhattan_distances
 
 
-def nearestNeighbor(distances, k):
+def kNN(distances, k):
     right_predictions = 0
 
     for i in range(len(distances)):
