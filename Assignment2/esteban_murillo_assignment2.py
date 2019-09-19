@@ -24,14 +24,17 @@ def main():
     images_names = image_tools.loadImages(global_vars.image_folder1, global_vars.image_folder2)
     rgb_values = image_tools.getRGBAttributesForAllFiles(images_names)
     labeled_data = utils.shuffle(utils.assignLabel(global_vars.image_folder1, global_vars.image_folder2, rgb_values))
+    print("Currently testing with values of k ranging from 1 to", global_vars.max_num_of_k_tries)
     # NOTE: The same shuffled data is passed to both builtinKNN & inhouseKNN
 
     # Cross-Fold validation + KNeighborsClassifier (all from sklearn)
+    print("\nValues for cross-Fold validation + KNeighborsClassifier (all from sklearn)")
     builtin_KNN_k_score_values = builtinKNN(labeled_data)
     print(builtin_KNN_k_score_values)
     print(utils.findBestKValue(builtin_KNN_k_score_values))
 
     # Cross-Fold validation + KNeighborsClassifier (all implemented from scratch)
+    print("\nValues for cross-Fold validation + KNeighborsClassifier (all implemented from scratch)")
     partitioned_data = utils.partitionDataSet(labeled_data)
     complete_set = utils.getFoldsCombinations(partitioned_data)
     inhouse_KNN_k_score_values = inhouseKNN(complete_set)
