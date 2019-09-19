@@ -40,7 +40,6 @@ def main():
 
 
 def inhouseKNN(complete_set):
-    default_distance_algorithm = inhouse_knn.manhattanDistance
     iterations = len(complete_set) // 2
     inhouse_KNN_k_score_values = []
 
@@ -51,7 +50,7 @@ def inhouseKNN(complete_set):
             train_set = complete_set[i]
             test_set = complete_set[-1 - i]
             train_set = utils.joinTrainSet(train_set)
-            distances = inhouse_knn.calculateDistance(default_distance_algorithm, train_set, test_set)
+            distances = inhouse_knn.calculateDistance(global_vars.default_distance_algorithm, train_set, test_set)
             right_predictions += inhouse_knn.kNN(distances, k)
             total_guesses += len(test_set)
 
