@@ -21,9 +21,9 @@ def cosDistance(training_data_set, test_data_set):
 
     for i in range(len(test_data_set)):
         distances = []
-        A = test_data_set[i]
+        A = test_data_set[i][0]
         for j in range(len(training_data_set)):
-            B = training_data_set[j]
+            B = training_data_set[j][0]
             numerator = 0
             denominator1 = 0
             denominator2 = 0
