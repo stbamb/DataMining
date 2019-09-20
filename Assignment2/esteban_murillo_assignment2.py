@@ -15,7 +15,9 @@ import image_tools as image_tools
 import inhouse_knn as inhouse_knn
 import global_variables as global_vars
 
+from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score
 
 
@@ -25,21 +27,31 @@ def main():
     rgb_values = image_tools.getRGBAttributesForAllFiles(images_names)
     labeled_data = utils.shuffle(utils.assignLabel(global_vars.image_folder1, global_vars.image_folder2, rgb_values))
     print("Currently testing with values of k ranging from 1 to", global_vars.max_num_of_k_tries)
-    # NOTE: The same shuffled data is passed to both builtinKNN & inhouseKNN
+    # NOTE: The same shuffled data is passed to builtinKNN, inhouseKNN, randomForest & SVC
 
     # Cross-Fold validation + KNeighborsClassifier (all from sklearn)
-    print("\nValues for cross-Fold validation + KNeighborsClassifier (all from sklearn)")
+    print("\nValues for cross-fold validation + KNeighborsClassifier (all from sklearn)")
     builtin_KNN_k_score_values = builtinKNN(labeled_data)
     print(builtin_KNN_k_score_values)
     print(utils.findBestKValue(builtin_KNN_k_score_values))
 
     # Cross-Fold validation + KNeighborsClassifier (all implemented from scratch)
-    print("\nValues for cross-Fold validation + KNeighborsClassifier (all implemented from scratch)")
+    print("\nValues for cross-fold validation + KNeighborsClassifier (all implemented from scratch)")
     partitioned_data = utils.partitionDataSet(labeled_data)
     complete_set = utils.getFoldsCombinations(partitioned_data)
     inhouse_KNN_k_score_values = inhouseKNN(complete_set)
     print(inhouse_KNN_k_score_values)
     print(utils.findBestKValue(inhouse_KNN_k_score_values))
+
+    # Cross-Fold validation + RandomForestClassifier (all from sklearn)
+    print("\nValues for cross-fold validation + RandomForestClassifier (all from sklearn)")
+    random_forest_k_score_values = randomForest(labeled_data)
+    print(random_forest_k_score_values)
+
+    # Cross-Fold validation + SVC (all from sklearn)
+    print("\nValues for cross-fold validation + SVC (all from sklearn)")
+    svc_k_score_values = randomForest(labeled_data)
+    print(svc_k_score_values)
 
 
 def inhouseKNN(complete_set):
@@ -81,6 +93,20 @@ def builtinKNN(labeled_data):
         builtin_KNN_k_score_values.append(np.mean(cv_scores))
 
     return builtin_KNN_k_score_values
+
+
+def randomForest(labeled_data):
+    X = utils.getSpecificsValues(labeled_data, 0)
+    y = utils.getSpecificsValues(labeled_data, 1)
+    cv_scores = cross_val_score(RandomForestClassifier(n_estimators=100), X, y, cv=global_vars.x_fold)
+    return np.mean(cv_scores)
+
+
+def SVC(labeled_data):
+    X = utils.getSpecificsValues(labeled_data, 0)
+    y = utils.getSpecificsValues(labeled_data, 1)
+    cv_scores = cross_val_score(SVC(), X, y, cv=global_vars.x_fold)
+    return np.mean(cv_scores)
 
 
 if __name__ == "__main__":
