@@ -70,7 +70,9 @@ def getSpecificsValues(labeled_data, desired_value):
 def findBestKValue(k_score_values):
     best_k_value = max(k_score_values)
     best_k_value_index = k_score_values.index(best_k_value)
-    return "Best value with k = {} with a mean of {}".format(best_k_value_index + 1, best_k_value)
+    return "Best value with k = {} with accuracy mean of {:.4%}, standard " \
+           "deviation of {:.4} and execution time of {:.4} seconds"\
+        .format(best_k_value_index + 1, best_k_value[0], best_k_value[1], best_k_value[2])
 
 
 def joinTrainSet(train_set):
