@@ -7,4 +7,7 @@
 # description   : Needed for esteban_murillo_assignment3.py to run
 # ==============================================================================
 
+
+book_name1 = "Alice's Adventures in Wonderland.pdf"
+book_name2 = "The Iliad.pdf"
 verbose = True

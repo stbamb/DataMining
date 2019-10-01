@@ -7,14 +7,16 @@
 # notes         : Assignment3
 # description   :
 # ==============================================================================
-
-import global_variables as global_vars
+import global_variables
+import nlp_tools
+import pdf_tools
 
 
 def main():
-    if global_vars.verbose:
-        print()
+    book_data = pdf_tools.extractInformation(global_variables.book_name1)
+    book_output = nlp_tools.getBookResults(book_data)
+    print(book_output)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
