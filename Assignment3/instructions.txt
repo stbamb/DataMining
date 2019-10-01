@@ -1,0 +1,35 @@
+Title
+Homework Assignment #3 [Required]
+Due
+Oct 4, 2019 9:00 AM
+Number of resubmissions allowed
+Unlimited
+Accept Resubmission Until
+Oct 5, 2019 9:00 AM
+Status
+Not Started
+Grade Scale
+Points (max 100.00)
+Instructions
+In this assignment, you will work with unstructured text data. You should use the NLTK and scikit-learn libraries in this assignment.
+
+Minimal performance [60 points]
+
+Read about Flesch reading-ease test: Flesch-Kincaid_readability_tests
+Implement a Python program that will take a long text as an input and return its Flesch reading-ease score (FRES).
+Test your program with an electronic book from Project Gutenberg web site (https://www.gutenberg.org/. The output for each book should include: the author, book title, FRES and a corresponding School level.
+Baseline performance [60-80 points]
+
+In addition to a minimal performance, derive bag-of-words (BOW) vectors for each of the binary classification data sets (positive and negative movie reviews).  You need to implement a Python program from scratch to compute BOW vectors. The data sets are available here [29MB].
+Perform a 5-fold cross-validation of your own kNN algorithm with the BOW-encoded text files and use cosine distance metric. Compute the performance metrics and running times for your kNN algorithm. Search for the best k in the range between 1 and 5.
+Test scikit-learn implementation of kNN and compute its performance metrics and running times. Use cosine distance. Search for the best k in the range between 1 and 5.
+Good performance [80-95]
+
+Implement your own Naive Bayes Classifier from scratch. Test it with the BOW-encoded files and estimate its performance in a five-fold cross-validation.
+Test scikit-learn implementation of Naive Bayes Classifier and estimate its performance in a five-fold cross-validation.
+Summarize and analyze the results of kNN and Naive Bayes Classifier in a LaTeX report. Include figures and tables to support your analyses.
+Excellent performance [95-100]
+
+Compute FRES scores for the positive and negative reviews. Add FRES to BOW features and perform a feature selection with kNN. Which distance metric should you use?
+Add FRES School level as a feature to the BOW features and perform a feature selection with Naive Bayes classifier.
+Describe and analyze your results in the report.
