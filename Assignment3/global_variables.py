@@ -8,6 +8,6 @@
 # ==============================================================================
 
 
-book_name1 = "Alice's Adventures in Wonderland.pdf"
-book_name2 = "The Iliad.pdf"
+book_name1 = "Books/Alice's Adventures in Wonderland.pdf"
+book_name2 = "Books/The Iliad.pdf"
 verbose = True
