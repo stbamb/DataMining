@@ -21,28 +21,14 @@ def getBookResults(book_data):
 
 
 def determineSchoolLevel(fres_score):
-    fres_score = roundup(fres_score)
-    for level in SchoolLevel:
-        if fres_score == level.value:
-            return level.name
+    school_level_upper_bounds = [30, 50, 60, 70, 80, 90, 100]
+    school_levels = ["College graduate", "College", "Tenth to twelfth grade", "Eight to ninth grade",
+                     "Seventh grade", "Sixth grade", "Fifth grade"]
+    index = -1
+    for i in range(len(school_level_upper_bounds)):
+        if fres_score < school_level_upper_bounds[i]:
+            index = i
+            break
 
-
-def roundup(x):
-    num = int(math.ceil(x / 10.0)) * 10
-    if num <= 20:
-        num = 30
-    elif num <= 40:
-        num = 50
-    elif num > 100:
-        num = 100
-    return num
-
-
-class SchoolLevel(enum.Enum):
-    COLLEGE_GRADUATE = 30
-    COLLEGE = 50
-    TENTH_TO_TWELFTH_GRADE = 60
-    EIGHTH_TO_NINTH_GRADE = 70
-    SEVENTH_GRADE = 80
-    SIXTH_GRADE = 90
-    FIFTH_GRADE = 100
+    print(fres_score)
+    return school_levels[index]
