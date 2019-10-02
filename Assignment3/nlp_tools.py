@@ -6,7 +6,13 @@
 # notes         : Assignment3
 # description   : Needed for esteban_murillo_assignment3.py to run
 # ==============================================================================
+import heapq
+import re
+
+import nltk
 from textatistic import Textatistic
+
+import global_variables
 
 
 def getBookResults(book_data):
@@ -27,5 +33,27 @@ def determineSchoolLevel(fres_score):
             index = i
             break
 
-    print(fres_score)
     return school_levels[index]
+
+
+# Code taken from https://www.geeksforgeeks.org/bag-of-words-bow-model-in-nlp/
+# and modified to work accordingly
+def getBOW(book_content):
+    dataset = nltk.sent_tokenize(book_content)
+    word2count = {}
+
+    for i in range(len(dataset)):
+        dataset[i] = dataset[i].lower()
+        dataset[i] = re.sub(r'\W', ' ', dataset[i])
+        dataset[i] = re.sub(r'\s+', ' ', dataset[i])
+
+    for data in dataset:
+        words = nltk.word_tokenize(data)
+        for word in words:
+            if word not in word2count.keys():
+                word2count[word] = 1
+            else:
+                word2count[word] += 1
+
+    freq_words = heapq.nlargest(global_variables.max_num_words, word2count, key=word2count.get)
+    return word2count
