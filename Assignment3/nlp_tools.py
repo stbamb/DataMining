@@ -6,9 +6,6 @@
 # notes         : Assignment3
 # description   : Needed for esteban_murillo_assignment3.py to run
 # ==============================================================================
-import enum
-import math
-
 from textatistic import Textatistic
 
 
