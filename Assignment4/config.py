@@ -1,17 +1,11 @@
 # author        : Esteban
 # course        : CS-691 Data Mining
-# name          : main.py
+# name          : config.py
 # date          : 20191025
-# usage         : python3 main.py
 # python_version: 3.7
 # notes         : Assignment4
-# description   :
+# description   : Needed for main.py to run
 # ==============================================================================
 
 
-def main():
-    print("Nothing has been done yet")
-
-
-if __name__ == "__main__":
-    main()
+SOURCE_CODE_FOLDER = "SRC/"
