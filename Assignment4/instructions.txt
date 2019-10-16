@@ -1,0 +1,28 @@
+Instructions
+In this assignment, you will hone your data mining skills in (a) data engineering and (b) implementing clustering algorithms.  In this assignment, you will work with Java source files and your objective is to:
+
+Devise features to represent these source (ASCII) files.
+Implement a k-means clustering algorithm from scratch.
+Cluster Java source files encoded by their features using at least two different clustering algorithms, your own k-means clustering algorithm and an existing clustering implementation(s).
+Implement a Python program to determine the best number of clusters for your k-means algorithm using the elbow method.
+Describe your methods, results and findings in a report.
+Submit all Python code and a PDF of LaTeX-formatted report by 9:00AM on October 25, 2019.
+
+Minimal performance [50--60 points]
+
+Download a zip archive containing Java source files.
+Convert each file to a feature vector -- the choice and the number of features are yours. However, think carefully about your encodings, you should be able to use one of the existing dissimilarity metrics to cluster the files in the downstream step. Describe and justify your choice of the features in the report.
+Baseline performance [60--80 points]
+
+Implement a k-means clustering algorithm.
+Test your implementation by clustering Java programs represented by their features. Use k=2 to produce two clusters.
+For each cluster, output, the total number of programs, corresponding program names, and the within the cluster sum of squares metric.
+Describe your results in the report.
+Good performance [80 -- 95 points]
+
+Use an "over-the-counter" implementation of a different clustering algorithm to cluster the same Java source files. Compare clustering results of two methods in your report.
+Automate the search for an optimal number of clusters for your k-means algorithm. Use the elbow method with the sum of squares metric and create the corresponding plot. Include a figure in your report and analyze the results.
+Excellent performance [95--100 points]
+
+Prototype a larger scale clustering application of your k-means algorithm to analyze programming source files. You can draw inspiration from the following publication: https://homepages.inf.ed.ac.uk/csutton/publications/msr2013.pdf
+Describe your findings, challenges and legal/ethical considerations.
