@@ -7,10 +7,13 @@
 # notes         : Assignment4
 # description   :
 # ==============================================================================
+import utils
 
 
 def main():
-    print("Nothing has been done yet")
+    features = utils.gatherFeatures()
+
+    print(features)
 
 
 if __name__ == "__main__":
