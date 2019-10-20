@@ -7,7 +7,6 @@
 # description   : Needed for main.py to run
 # ==============================================================================
 import os
-import re
 
 import config
 
@@ -22,8 +21,8 @@ def gatherFeatures():
         files_text.append(retrieveText(file))
 
     for file in files_text:
-        text_features = [file_names[i], len(file), getNumberComments(file)]
-        features.append(text_features)
+        text_features = [len(file), getNumberOccurrences(file)[0], getNumberOccurrences(file)[1]]
+        features.append((text_features, file_names[i]))
         i += 1
 
     return features
@@ -53,8 +52,10 @@ def getFileNames():
     return file_names
 
 
-def getNumberComments(file_text):
+def getNumberOccurrences(file_text):
     num_comments = 0
+    num_imports = 0
     for line in file_text:
         num_comments += line.count(config.JAVA_SINGLE_LINE_COMMENT)
-    return num_comments
+        num_imports += line.count(config.JAVA_IMPORT_STATEMENT)
+    return num_comments, num_imports

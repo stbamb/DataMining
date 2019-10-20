@@ -6,10 +6,15 @@
 # notes         : Assignment4
 # description   : Needed for main.py to run
 # ==============================================================================
+import clustering
 
-
+DEFAULT_DISTANCE_ALGORITHM = clustering.manhattanDistance
+NUMBER_OF_CLUSTERS = 2
 SOURCE_CODE_FOLDER = "SRC/"
+JAVA_IMPORT_STATEMENT = "import"
 JAVA_SINGLE_LINE_COMMENT = "//"
 JAVA_COMMENT_BLOCK_START = "^/*"
 JAVA_COMMENT_BLOCK_END = "*/$"
 JAVA_COMMENT_BLOCK_REGEX = "/\*(.|[\r\n])*?\*/"
+DEBUG = False
+VERBOSE = True
