@@ -14,14 +14,14 @@ import config
 def gatherFeatures():
     features = []
     files_text = []
+    file_names = getFileNames()
     i = 0
 
-    file_names = getFileNames()
     for file in file_names:
         files_text.append(retrieveText(file))
 
     for file in files_text:
-        text_features = [len(file), getNumberOccurrences(file)[0], getNumberOccurrences(file)[1]]
+        text_features = [len(file), getNumberOfOccurrences(file)[0], getNumberOfOccurrences(file)[1]]
         features.append((text_features, file_names[i]))
         i += 1
 
@@ -52,7 +52,7 @@ def getFileNames():
     return file_names
 
 
-def getNumberOccurrences(file_text):
+def getNumberOfOccurrences(file_text):
     num_comments = 0
     num_imports = 0
     for line in file_text:

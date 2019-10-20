@@ -11,33 +11,42 @@ import random
 import config
 
 
-def k_means_clustering(features, k):
-    clusters = createClusterGroups(k)
-    centroids = getCentroids(features, k)
-    distances = config.DEFAULT_DISTANCE_ALGORITHM(features, centroids)
-    distances_to_clusters = getDistancesToClusters(distances)
-    closest_cluster_idx = assignToCluster(distances_to_clusters)
-
-    for i in range(len(closest_cluster_idx)):
-        cluster_num = closest_cluster_idx[i]
-        clusters[cluster_num].append(features[i])
-
-    if config.VERBOSE:
-        print("Features:\n", features, "\n")
-        print("Centroids:\n", centroids, "\n")
-        print("Distances:\n", distances, "\n")
-        print("Distances to clusters:\n", distances_to_clusters, "\n")
-        print("Closest cluster indexes:\n", closest_cluster_idx, "\n")
-        for i in range(len(clusters)):
-            print("Cluster", i + 1, "\n", clusters[i], "\n")
-            print("With", len(clusters[i]), "elements\n")
-
-
-def createClusterGroups(k):
+def k_means_clustering(labeled_features, k):
+    stop_conditions = []
     clusters = []
-    for i in range(k):
-        clusters.append([])
+    iteration = 0
+
+    while continueClustering(stop_conditions, iteration):
+        features = [value[0] for value in labeled_features]
+        centroids = getCentroids(clusters, features, k, iteration)
+        distances = config.DEFAULT_DISTANCE_ALGORITHM(features, centroids)
+        distances_to_clusters = getDistancesToClusters(distances)
+        clusters = assignToCluster(labeled_features, distances_to_clusters)
+        new_centroids = getAvgCentroid(clusters)
+        centroids_changed = didCentroidsChange(centroids, new_centroids)
+        stop_conditions.clear()
+        stop_conditions.append(centroids_changed)
+        iteration += 1
+
+        if config.VERBOSE:
+            print("*"*128, "ITERATION #", iteration, "*"*128)
+            print("Labeled features:\n", labeled_features, "\n")
+            print("Centroids:\n", centroids, "\n")
+            print("Distances to clusters:\n", distances_to_clusters, "\n")
+            for i in range(len(clusters)):
+                print("Cluster {}, with {} elements:\n {}\n".format(i + 1, len(clusters[i]), clusters[i]))
+            print("Centroids changed?\n", centroids_changed, "\n")
+
     return clusters
+
+
+def continueClustering(conditions, iteration):
+    flag = True
+    if iteration >= config.MAX_NUMBER_OF_ITERATIONS:
+        return not flag
+    for condition in conditions:
+        flag = flag and condition
+    return flag
 
 
 def calculateDistance(default_distance_algorithm, *training_data_set, **test_data_set):
@@ -47,10 +56,10 @@ def calculateDistance(default_distance_algorithm, *training_data_set, **test_dat
 def manhattanDistance(training_data_set, test_data_set):
     manhattan_distances = []
     for i in range(len(test_data_set)):
-        A = test_data_set[i][0]
+        A = test_data_set[i]
         distances = []
         for j in range(len(training_data_set)):
-            B = training_data_set[j][0]
+            B = training_data_set[j]
             dist = 0
             for k in range(len(A) - 1):
                 dist += abs(A[k] - B[k])
@@ -59,14 +68,26 @@ def manhattanDistance(training_data_set, test_data_set):
     return manhattan_distances
 
 
-def getCentroids(features, k):
+def getCentroids(clusters, features, k, iteration):
     centroids = []
-    for i in range(k):
-        random_centroid_idx = random.randint(0, len(features) - 1)
-        while features[random_centroid_idx] in centroids:
+    if iteration == 0:  # if it is the first time, then pick a datapoint at random
+        for i in range(k):
             random_centroid_idx = random.randint(0, len(features) - 1)
-        centroids.append(features[random_centroid_idx])
+            while features[random_centroid_idx] in centroids:
+                random_centroid_idx = random.randint(0, len(features) - 1)
+            centroids.append(features[random_centroid_idx])
+    else:  # otherwise, calculate the avg
+        centroids = getAvgCentroid(clusters)
     return centroids
+
+
+def getAvgCentroid(clusters):
+    avgs = []
+    for cluster in clusters:
+        features = [element[0] for element in cluster]
+        avg_for_cluster = [sum(value) / len(features) for value in zip(*features)]
+        avgs.append(avg_for_cluster)
+    return avgs
 
 
 def getDistancesToClusters(distances):
@@ -79,9 +100,21 @@ def getDistancesToClusters(distances):
     return distances_to_clusters
 
 
-def assignToCluster(distances_to_clusters):
-    closest_cluster_idx = []
+def assignToCluster(labeled_features, distances_to_clusters):
+    clusters = []
+    i = 0
+    for _ in distances_to_clusters[0]:
+        clusters.append([])
     for distance in distances_to_clusters:
         idx = distance.index(min(distance))
-        closest_cluster_idx.append(idx)
-    return closest_cluster_idx
+        clusters[idx].append(labeled_features[i])
+        i += 1
+    return clusters
+
+
+def didCentroidsChange(old_centroids, new_centroids):
+    return old_centroids != new_centroids
+
+
+def didClustersChange(old_clusters, new_clusters):
+    return old_clusters != new_clusters

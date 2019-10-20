@@ -7,16 +7,14 @@
 # notes         : Assignment4
 # description   :
 # ==============================================================================
+import clustering
 import config
 import utils
-import clustering
 
 
 def main():
     features = utils.gatherFeatures()
-
-    features = features[:100]
-    clustering.k_means_clustering(features, config.NUMBER_OF_CLUSTERS)
+    clusters = clustering.k_means_clustering(features, config.NUMBER_OF_CLUSTERS)
 
 
 if __name__ == "__main__":
