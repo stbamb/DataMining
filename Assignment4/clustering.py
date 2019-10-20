@@ -17,9 +17,9 @@ def k_means_clustering(labeled_features, k):
     iteration = 0
 
     while continueClustering(stop_conditions, iteration):
-        features = [value[0] for value in labeled_features]
+        features = [feature[0] for feature in labeled_features]
         centroids = getCentroids(clusters, features, k, iteration)
-        distances = config.DEFAULT_DISTANCE_ALGORITHM(features, centroids)
+        distances = manhattanDistance(features, centroids)
         distances_to_clusters = getDistancesToClusters(distances)
         clusters = assignToCluster(labeled_features, distances_to_clusters)
         new_centroids = getAvgCentroid(clusters)
@@ -47,10 +47,6 @@ def continueClustering(conditions, iteration):
     for condition in conditions:
         flag = flag and condition
     return flag
-
-
-def calculateDistance(default_distance_algorithm, *training_data_set, **test_data_set):
-    return default_distance_algorithm(*training_data_set, **test_data_set)
 
 
 def manhattanDistance(training_data_set, test_data_set):
