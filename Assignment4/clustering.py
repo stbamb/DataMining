@@ -6,6 +6,7 @@
 # notes         : Assignment4
 # description   : Needed for main.py to run
 # ==============================================================================
+import math
 import random
 
 import config
@@ -15,58 +16,71 @@ def k_means_clustering(labeled_features, k):
     features = [feature[0] for feature in labeled_features]
     stop_conditions = []
     new_clusters = []
-    iteration = 0
+    iteration = 1
 
-    while continueClustering(stop_conditions, iteration):
-        if iteration == 0:  # if it is the first time, then pick random datapoints as centroids
+    while continueClustering(stop_conditions):
+        if iteration == 1:  # if it is the first time, then pick random data points as centroids
             old_centroids = getRandomCentroids(features, k)
         else:  # otherwise compute averages and make it your new centroids
             old_centroids = new_centroids
 
-        distances = manhattanDistance(features, old_centroids)
+        distances = calculateDistance(euclideanDistance, features, old_centroids)
+
         distances_to_clusters = getDistancesToClusters(distances)
         old_clusters = new_clusters
         new_clusters = assignToCluster(labeled_features, distances_to_clusters)
         new_centroids = getAvgCentroid(new_clusters)
 
-        stop_conditions = (old_clusters != new_clusters, old_centroids != new_centroids)
-        iteration += 1
+        squared_metrics_sum = getSquaredMetricsSum(distances)
+
+        stop_conditions = getStopConditions(old_clusters, new_clusters, old_centroids, new_centroids, iteration)
 
         if config.VERBOSE:
-            print("*"*128, "ITERATION #", iteration, "*"*128)
+            print("*" * 128, "ITERATION #", iteration, "*" * 128)
             print("Labeled features:\n", labeled_features, "\n")
             print("Centroids:\n", old_centroids, "\n")
             print("Distances to clusters:\n", distances_to_clusters, "\n")
+            print("Distances:\n", distances, "\n")
             for i in range(len(new_clusters)):
                 print("Cluster {}, with {} elements:\n {}\n".format(i + 1, len(new_clusters[i]), new_clusters[i]))
-            print("Clusters changed? {}\nCentroids changed? {}\nIteration: {}\n"
-                  .format(stop_conditions[0], stop_conditions[1], iteration))
+                print("Squared metrics sum {}".format(squared_metrics_sum[i]))
+            print("Clusters changed? {}\nCentroids changed? {}\nContinue? {}\nIteration: {} out of {}"
+                  .format(stop_conditions[0], stop_conditions[1], stop_conditions[2],
+                          iteration, config.MAX_NUMBER_OF_ITERATIONS))
 
+        iteration += 1
     return new_clusters
 
 
-def continueClustering(conditions, iteration):
-    flag = True
-    if iteration >= config.MAX_NUMBER_OF_ITERATIONS:
-        return not flag
+def continueClustering(conditions):
+    continue_clustering = True
     for condition in conditions:
-        flag = flag and condition
-    return flag
+        continue_clustering = continue_clustering and condition
+    return continue_clustering
+
+
+def calculateDistance(default_distance_algorithm, *training_data_set, **test_data_set):
+    return default_distance_algorithm(*training_data_set, **test_data_set)
 
 
 def manhattanDistance(training_data_set, test_data_set):
     manhattan_distances = []
-    for i in range(len(test_data_set)):
-        A = test_data_set[i]
+    for test_set in test_data_set:
         distances = []
-        for j in range(len(training_data_set)):
-            B = training_data_set[j]
-            dist = 0
-            for k in range(len(A) - 1):
-                dist += abs(A[k] - B[k])
-            distances.append(dist)
+        for training_set in training_data_set:
+            distances.append(sum([(abs(x - y)) for x, y in zip(test_set, training_set)]))
         manhattan_distances.append(distances)
     return manhattan_distances
+
+
+def euclideanDistance(training_data_set, test_data_set):
+    euclidean_distances = []
+    for test_set in test_data_set:
+        distances = []
+        for training_set in training_data_set:
+            distances.append(math.sqrt(sum([(x - y) ** 2 for x, y in zip(test_set, training_set)])))
+        euclidean_distances.append(distances)
+    return euclidean_distances
 
 
 def getRandomCentroids(features, k):
@@ -86,6 +100,11 @@ def getAvgCentroid(clusters):
         avg_for_cluster = [sum(value) / len(features) for value in zip(*features)]
         averages.append(avg_for_cluster)
     return averages
+
+
+def getSquaredMetricsSum(distances):
+    squared_metrics_sum = [sum(distance) ** 2 for distance in distances]
+    return squared_metrics_sum
 
 
 def getDistancesToClusters(distances):
@@ -108,3 +127,10 @@ def assignToCluster(labeled_features, distances_to_clusters):
         clusters[idx].append(labeled_features[i])
         i += 1
     return clusters
+
+
+def getStopConditions(old_clusters, new_clusters, old_centroids, new_centroids, iteration):
+    continue_clustering = True
+    if iteration >= config.MAX_NUMBER_OF_ITERATIONS:
+        continue_clustering = not continue_clustering
+    return old_clusters != new_clusters, old_centroids != new_centroids, continue_clustering

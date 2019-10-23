@@ -7,7 +7,7 @@
 # description   : Needed for main.py to run
 # ==============================================================================
 
-
+#DEFAULT_DISTANCE_ALGORITHM = "manhattanDistance"
 SOURCE_CODE_FOLDER = "SRC/"
 MAX_NUMBER_OF_ITERATIONS = 10
 NUMBER_OF_CLUSTERS = 2
