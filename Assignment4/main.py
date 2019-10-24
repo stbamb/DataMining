@@ -1,7 +1,7 @@
 # author        : Esteban
 # course        : CS-691 Data Mining
 # name          : main.py
-# date          : 20191025
+# date          : 20191024
 # usage         : python3 main.py
 # python_version: 3.7
 # notes         : Assignment4
@@ -21,8 +21,14 @@ def main():
     printResults(custom_clustering_data, sklearn_clusters, config.NUMBER_OF_CLUSTERS)
     scores = compareKs(labeled_features)
 
-    print("SCORES FOR CUSTOM K-MEANS ALGORITHM", scores[0])
-    print("SCORES FOR SKLEARN K-MEANS ALGORITHM", scores[1])
+    print("*" * 64, "EXPLORING THE BEST K VALUE FOR K-MEANS", "*" * 64)
+    print("*" * 69, "SELF-IMPLEMENTED VS. SKLEARN", "*" * 69)
+
+    custom_score = [float("%.2f" % sum(x)) for x in scores[0]]
+    sklearn_score = [float("%.2f" % x) for x in scores[1]]
+
+    print("SCORES FOR CUSTOM K-MEANS ALGORITHM:  {}".format(custom_score))
+    print("SCORES FOR SKLEARN K-MEANS ALGORITHM: {}".format(sklearn_score))
 
 
 def compareKs(labeled_features):
@@ -42,13 +48,13 @@ def printResults(custom_clusters, sklearn_clusters, k):
     print("*" * 64, "CUSTOM K-MEANS ALGORITHM WITH K =", k, "*" * 64)
     for i in range(k):
         programs = [element[1] for element in custom_clusters[0][i]]
-        print("Cluster {}, with {} elements:\n\n{}\n"
-              .format(i + 1, len(programs), programs))
+        print("Cluster {} (with {} elements and SSE of {:.2f}):\n\n{}\n"
+              .format(i + 1, len(programs), custom_clusters[1][i], programs))
 
     print("*" * 64, "SKLEARN K-MEANS ALGORITHM WITH K =", k, "*" * 64)
     for i in range(k):
         programs = [element[1] for element in sklearn_clusters[0][i]]
-        print("Cluster {}, with {} elements:\n\n{}\n"
+        print("Cluster {} (with {} elements):\n\n{}\n"
               .format(i + 1, len(programs), programs))
 
 

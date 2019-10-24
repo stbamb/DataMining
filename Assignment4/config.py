@@ -1,7 +1,7 @@
 # author        : Esteban
 # course        : CS-691 Data Mining
 # name          : config.py
-# date          : 20191025
+# date          : 20191024
 # python_version: 3.7
 # notes         : Assignment4
 # description   : Needed for main.py to run

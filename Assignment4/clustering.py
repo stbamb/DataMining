@@ -1,7 +1,7 @@
 # author        : Esteban
 # course        : CS-691 Data Mining
 # name          : clustering.py
-# date          : 20191025
+# date          : 20191024
 # python_version: 3.7
 # notes         : Assignment4
 # description   : Needed for main.py to run
@@ -26,12 +26,12 @@ def k_means_clustering(labeled_features, k):
 
         distances = calculateDistance(euclideanDistance, features, old_centroids)
 
-        distances_to_clusters = getDistancesToClusters(distances)
+        distances_to_centroids = getDistancesToCentroids(distances)
         old_clusters = new_clusters
-        new_clusters = assignToCluster(labeled_features, distances_to_clusters)
+        new_clusters = assignToCluster(labeled_features, distances_to_centroids)
         new_centroids = getAvgCentroid(new_clusters)
 
-        sse = getSquaredMetricsSum(distances)
+        sse = getSSE(new_clusters, new_centroids)
 
         stop_conditions = getStopConditions(old_clusters, new_clusters, old_centroids, new_centroids, iteration)
 
@@ -39,18 +39,17 @@ def k_means_clustering(labeled_features, k):
             print("*" * 64, "ITERATION #", iteration, "*" * 64)
             print("Labeled features:\n", labeled_features, "\n")
             print("Centroids:\n", old_centroids, "\n")
-            print("Distances to clusters:\n", distances_to_clusters, "\n")
+            print("Distances to clusters:\n", distances_to_centroids, "\n")
             print("Distances:\n", distances, "\n")
             for i in range(len(new_clusters)):
-                print("Cluster {}, with {} elements and SSE of {}:\n\n{}\n"
+                print("Cluster {}, with {} elements and SSE of {:.2%}:\n\n{}\n"
                       .format(i + 1, len(new_clusters[i]), sse[i], new_clusters[i]))
             print("Clusters changed? {}\nCentroids changed? {}\nContinue? {}\nIteration: {} out of {}\n"
                   .format(stop_conditions[0], stop_conditions[1], stop_conditions[2],
                           iteration, config.MAX_NUMBER_OF_ITERATIONS))
 
         iteration += 1
-    distortion = sum(sse)
-    return new_clusters, distortion
+    return new_clusters, sse
 
 
 def continueClustering(conditions):
@@ -103,27 +102,34 @@ def getAvgCentroid(clusters):
     return averages
 
 
-def getSquaredMetricsSum(distances):
-    squared_metrics_sum = [sum(distance) for distance in distances]
-    return squared_metrics_sum
+def getSSE(clusters, centroids):
+    sse = []
+    distance_to_centroids = []
+    for cluster in clusters:
+        distance_to_centroids.append([dist[0] for dist in cluster])
+    for i in range(len(distance_to_centroids)):
+        distances = euclideanDistance(distance_to_centroids[i], centroids)
+        distances = distances[i]
+        sse.append(sum([value ** 2 for value in distances]))
+    return sse
 
 
-def getDistancesToClusters(distances):
-    distances_to_clusters = []
+def getDistancesToCentroids(distances):
+    distances_to_centroids = []
     for j in range(len(distances[0])):
         dists = []
         for i in range(len(distances)):
             dists.append(distances[i][j])
-        distances_to_clusters.append(dists)
-    return distances_to_clusters
+        distances_to_centroids.append(dists)
+    return distances_to_centroids
 
 
-def assignToCluster(labeled_features, distances_to_clusters):
+def assignToCluster(labeled_features, distances_to_centroids):
     clusters = []
     i = 0
-    for _ in distances_to_clusters[0]:
+    for _ in distances_to_centroids[0]:
         clusters.append([])
-    for distance in distances_to_clusters:
+    for distance in distances_to_centroids:
         idx = distance.index(min(distance))
         clusters[idx].append(labeled_features[i])
         i += 1
