@@ -31,7 +31,7 @@ def gatherFeatures():
 def retrieveText(file_name):
     text = []
     try:
-        with open(file_name) as f:
+        with open(config.SOURCE_CODE_FOLDER + file_name) as f:
             datafile = f.readlines()
             for line in datafile:
                 text.append(line)
@@ -46,7 +46,7 @@ def getFileNames():
     try:
         for file in os.listdir(directory):
             file_name = os.fsdecode(file)
-            file_names.append(config.SOURCE_CODE_FOLDER + file_name)
+            file_names.append(file_name)
     except FileNotFoundError:
         print("Directory not found")
     return file_names

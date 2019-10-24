@@ -44,7 +44,7 @@ def k_means_clustering(labeled_features, k):
             for i in range(len(new_clusters)):
                 print("Cluster {}, with {} elements:\n {}\n".format(i + 1, len(new_clusters[i]), new_clusters[i]))
                 print("Squared metrics sum {}".format(squared_metrics_sum[i]))
-            print("Clusters changed? {}\nCentroids changed? {}\nContinue? {}\nIteration: {} out of {}"
+            print("Clusters changed? {}\nCentroids changed? {}\nContinue? {}\nIteration: {} out of {}\n"
                   .format(stop_conditions[0], stop_conditions[1], stop_conditions[2],
                           iteration, config.MAX_NUMBER_OF_ITERATIONS))
 
@@ -103,7 +103,7 @@ def getAvgCentroid(clusters):
 
 
 def getSquaredMetricsSum(distances):
-    squared_metrics_sum = [sum(distance) ** 2 for distance in distances]
+    squared_metrics_sum = [sum(distance) for distance in distances]
     return squared_metrics_sum
 
 
