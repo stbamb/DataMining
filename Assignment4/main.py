@@ -16,30 +16,46 @@ import utils
 
 def main():
     labeled_features = utils.gatherFeatures()
-    custom_clusters = clustering.k_means_clustering(labeled_features, config.NUMBER_OF_CLUSTERS)
-    sklearn_clusters = sklearnClustering(labeled_features)
-    printResults(custom_clusters, sklearn_clusters)
+    custom_clustering_data = clustering.k_means_clustering(labeled_features, config.NUMBER_OF_CLUSTERS)
+    sklearn_clusters = sklearnClustering(labeled_features, config.NUMBER_OF_CLUSTERS)
+    printResults(custom_clustering_data, sklearn_clusters, config.NUMBER_OF_CLUSTERS)
+    scores = compareKs(labeled_features)
 
-    if custom_clusters == sklearn_clusters:
-        print("Same elements were clustered together for both algorithms")
-
-
-def printResults(custom_clusters, sklearn_clusters):
-    print("*" * 128, "CUSTOM K-MEANS ALGORITHM", "*" * 128)
-    for i in range(config.NUMBER_OF_CLUSTERS):
-        programs = [element[1] for element in custom_clusters[i]]
-        print("Elements in cluster {}:\n\n{}\n\nWith a total of {} elements\n".format(i + 1, programs, len(programs)))
-
-    print("*" * 128, "SKLEARN K-MEANS ALGORITHM", "*" * 128)
-    for i in range(config.NUMBER_OF_CLUSTERS):
-        programs = [element[1] for element in sklearn_clusters[i]]
-        print("Elements in cluster {}:\n\n{}\n\nWith a total of {} elements\n".format(i + 1, programs, len(programs)))
+    print("SCORES FOR CUSTOM K-MEANS ALGORITHM", scores[0])
+    print("SCORES FOR SKLEARN K-MEANS ALGORITHM", scores[1])
 
 
-def sklearnClustering(labeled_features):
-    clusters = getClusterValues(config.NUMBER_OF_CLUSTERS)
+def compareKs(labeled_features):
+    custom_clustering_scores = []
+    sklearn_clustering_scores = []
+    for k in range(1, config.MAX_NUMBER_OF_ITERATIONS + 1):
+        custom_clustering_data = clustering.k_means_clustering(labeled_features, k)
+        sklearn_clusters_data = sklearnClustering(labeled_features, k)
+        custom_clustering_scores.append(custom_clustering_data[1])
+        sklearn_clustering_scores.append(sklearn_clusters_data[1])
+        if config.DEBUG:
+            printResults(custom_clustering_data, sklearn_clusters_data, k)
+    return custom_clustering_scores, sklearn_clustering_scores
+
+
+def printResults(custom_clusters, sklearn_clusters, k):
+    print("*" * 64, "CUSTOM K-MEANS ALGORITHM WITH K =", k, "*" * 64)
+    for i in range(k):
+        programs = [element[1] for element in custom_clusters[0][i]]
+        print("Cluster {}, with {} elements:\n\n{}\n"
+              .format(i + 1, len(programs), programs))
+
+    print("*" * 64, "SKLEARN K-MEANS ALGORITHM WITH K =", k, "*" * 64)
+    for i in range(k):
+        programs = [element[1] for element in sklearn_clusters[0][i]]
+        print("Cluster {}, with {} elements:\n\n{}\n"
+              .format(i + 1, len(programs), programs))
+
+
+def sklearnClustering(labeled_features, k):
+    clusters = getClusterValues(k)
     features = [feature[0] for feature in labeled_features]
-    km = KMeans(n_clusters=2, init='random', n_init=1, max_iter=config.MAX_NUMBER_OF_ITERATIONS)
+    km = KMeans(n_clusters=k, init='random', n_init=1, max_iter=config.MAX_NUMBER_OF_ITERATIONS)
     y_km = km.fit_predict(features)
 
     pos = 0
@@ -47,11 +63,7 @@ def sklearnClustering(labeled_features):
         clusters[value].append(labeled_features[pos])
         pos += 1
 
-    if config.VERBOSE:
-        print(km.cluster_centers_)
-        print(km.inertia_)
-
-    return clusters
+    return clusters, km.inertia_
 
 
 def getClusterValues(k):

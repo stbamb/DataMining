@@ -31,25 +31,26 @@ def k_means_clustering(labeled_features, k):
         new_clusters = assignToCluster(labeled_features, distances_to_clusters)
         new_centroids = getAvgCentroid(new_clusters)
 
-        squared_metrics_sum = getSquaredMetricsSum(distances)
+        sse = getSquaredMetricsSum(distances)
 
         stop_conditions = getStopConditions(old_clusters, new_clusters, old_centroids, new_centroids, iteration)
 
         if config.VERBOSE:
-            print("*" * 128, "ITERATION #", iteration, "*" * 128)
+            print("*" * 64, "ITERATION #", iteration, "*" * 64)
             print("Labeled features:\n", labeled_features, "\n")
             print("Centroids:\n", old_centroids, "\n")
             print("Distances to clusters:\n", distances_to_clusters, "\n")
             print("Distances:\n", distances, "\n")
             for i in range(len(new_clusters)):
-                print("Cluster {}, with {} elements:\n {}\n".format(i + 1, len(new_clusters[i]), new_clusters[i]))
-                print("Squared metrics sum {}".format(squared_metrics_sum[i]))
+                print("Cluster {}, with {} elements and SSE of {}:\n\n{}\n"
+                      .format(i + 1, len(new_clusters[i]), sse[i], new_clusters[i]))
             print("Clusters changed? {}\nCentroids changed? {}\nContinue? {}\nIteration: {} out of {}\n"
                   .format(stop_conditions[0], stop_conditions[1], stop_conditions[2],
                           iteration, config.MAX_NUMBER_OF_ITERATIONS))
 
         iteration += 1
-    return new_clusters
+    distortion = sum(sse)
+    return new_clusters, distortion
 
 
 def continueClustering(conditions):
