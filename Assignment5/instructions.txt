@@ -1,0 +1,26 @@
+Instructions
+In this assignment, you will work with sound files (.wav). Your goal is to perform cluster analysis of over 920 sound files represented by their mel-frequency cepstral (MFC) coefficients.  You will use these coefficient as the features for this data set.
+
+Submit all Python code and a PDF file of a LaTeX-formatted report as one zip archive by 9:00AM on November 8, 2019. NOTE: the experiments in the "Good Performance" part will take a long (compute) time, please, plan accordingly.
+
+Minimal performance [50--60 points]
+
+Download a zip archive containing sound files and a short Python program, and extract the files.
+Create a directory called output/. You will store all of your output files in the output/ directory.
+Install LibROSA package: https://librosa.github.io/librosa/index.html
+Examine sample.py and extend it to extract features from every sound file in the data/ directory. Note that feature extraction is relatively show, therefore, I expect that you will compute the features and store them in a comma-delimited file called sound_features.csv. Put this file into the data/ directory. You can use it in your downstream programs. Also, in the sample.py example, I compute 40 features. You should reduce the number of features during implementation and debugging your code. Moreover, the number of features should be a user-defined parameter (valid range: 3 to 40).
+Run 'over-the-counter' DBSCAN with default parameters, get the number of clusters and save the members of each cluster in an output file. The output should begin with a single integer on the first line indicating the number of clusters, followed by multiple lines of comma-delimited lists of cluster members. More specifically, the second line will contain members of cluster1, the third one will list members of cluster2, etc. Each member in a cluster should be identified by the corresponding file number (e.g. 203424 for the sample file in the sample.py).
+Baseline performance [60--80 points]
+
+Use your own implementation of the k-means algorithm with k set to the number of clusters found by DBSCAN. Use Euclidean distance and terminate the algorithm after 5 iterations. Do not re-seed your clusters. Write the clustering results to a file using the format described above.
+Use 'over-the-counter' k-means with k set to the number of clusters found by DBSCAN. Make sure the main parameters are set to match the settings of your k-means. Write the results of the clustering to a file using the format described above.
+Use 'over-the-counter' agglomerative hierarchical clustering algorithm with complete linkage. Create the same number of clusters as was determined by DBSCAN. Output clustering results using the format specified above.
+Good performance [80 -- 95 points]
+
+Compute 40 features for every file and run cluster analyses with DBSCAN, your implementation of k-means, 'over-the-counter'  k-means and a hierarchical clustering with complete linkage. Record the execution times of each implementation.
+Write code to compare agreements in cluster memberships as follows. Create an N-by-N matrix, counting how often pairs of sound files occurred in the same cluster. N is the total number of files in the data set.
+Prepare a LaTeX-formatted report describing the results of your analyses. Discuss the running times and the concordance analysis (item #2 above). Support your discussion with Figures.
+Excellent performance [95--100 points]
+
+Try classifying Urbansound8K with a Convolutional Neural Network (CNN). A sample tutorial is posted at
+Describe your results and insights in the report.
