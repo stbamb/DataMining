@@ -110,4 +110,4 @@ venv.bak/
 test.*
 *Tmp/
 Test*/
-*.csv
+output/
