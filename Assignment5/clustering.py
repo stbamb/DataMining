@@ -9,6 +9,7 @@
 import math
 import random
 
+import numpy as np
 from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
 
 import config
@@ -148,9 +149,17 @@ def getStopConditions(old_clusters, new_clusters, old_centroids, new_centroids, 
 
 def sklearnDBSCAN(labeled_features):
     features = [feature[0] for feature in labeled_features]
-    db_default = DBSCAN().fit(features)
-    labels = db_default.labels_
-    print(labels)
+    db_default = DBSCAN()
+    labels = db_default.fit_predict(features)
+    unique_values = len(np.unique(labels))
+    clusters = getClusterValues(unique_values)
+    pos = 0
+    for value in labels:
+        clusters[value].append(labeled_features[pos])
+        pos += 1
+    if config.DEBUG:
+        print("DBSCAN labels:\n", labels)
+    return clusters
 
 
 def sklearnKMeansClustering(labeled_features, k):

@@ -14,14 +14,14 @@ import utils
 
 def main():
     file_names = utils.loadFileNames()
-    file_names = file_names[900:]
-
     mfccs = loadMFCCSValues(file_names)
     labeled_data = utils.createLabeledData(file_names, mfccs)
 
-    baselinePerformance(labeled_data, config.NUMBER_OF_CLUSTERS)
+    # Run sklearn DBSCAN algorithm, write to file and get the k value from it
+    dbscan_clusters = clustering.sklearnDBSCAN(labeled_data)
+    utils.writeToFile(config.DBSCAN_KMEANS_OUTPUT, dbscan_clusters)
 
-    clustering.sklearnDBSCAN(labeled_data)
+    baselinePerformance(labeled_data, len(dbscan_clusters))  # config.NUMBER_OF_CLUSTERS)
 
 
 def loadMFCCSValues(file_names):
