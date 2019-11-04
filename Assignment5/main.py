@@ -34,16 +34,17 @@ def loadMFCCSValues(file_names):
 
 def baselinePerformance(labeled_data, k):
     custom_clusters = clustering.k_means_clustering(labeled_data, k)
-    custom_clusters = custom_clusters[0]
-    sklearn_clusters = clustering.sklearnClustering(labeled_data, k)
-    sklearn_clusters = sklearn_clusters[0]
+    sklearn_clusters = clustering.sklearnKMeansClustering(labeled_data, k)
+    agglomerative_clusters = clustering.sklearnAgglomerativeClustering(labeled_data, k)
 
     utils.writeToFile(config.CUSTOM_KMEANS_OUTPUT, custom_clusters)
     utils.writeToFile(config.SKLEARN_KMEANS_OUTPUT, sklearn_clusters)
+    utils.writeToFile(config.AGGLOMERATIVE_KMEANS_OUTPUT, agglomerative_clusters)
 
     if config.VERBOSE:
         print("custom_clusters:\n", custom_clusters)
         print("sklearn_clusters:\n", sklearn_clusters)
+        print("agglomerative_clusters:\n", agglomerative_clusters)
 
 
 if __name__ == "__main__":

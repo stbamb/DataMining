@@ -9,7 +9,7 @@
 import math
 import random
 
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, AgglomerativeClustering
 
 import config
 
@@ -52,7 +52,7 @@ def k_means_clustering(labeled_features, k):
                           iteration, config.MAX_NUMBER_OF_ITERATIONS))
 
         iteration += 1
-    return new_clusters, sse
+    return new_clusters  # , sse
 
 
 def continueClustering(conditions):
@@ -146,7 +146,7 @@ def getStopConditions(old_clusters, new_clusters, old_centroids, new_centroids, 
     return old_clusters != new_clusters, old_centroids != new_centroids, continue_clustering
 
 
-def sklearnClustering(labeled_features, k):
+def sklearnKMeansClustering(labeled_features, k):
     clusters = getClusterValues(k)
     features = [feature[0] for feature in labeled_features]
     km = KMeans(n_clusters=k, init='random', n_init=1, max_iter=config.MAX_NUMBER_OF_ITERATIONS)
@@ -155,7 +155,21 @@ def sklearnClustering(labeled_features, k):
     for value in y_km:
         clusters[value].append(labeled_features[pos])
         pos += 1
-    return clusters, km.inertia_
+    return clusters
+
+
+def sklearnAgglomerativeClustering(labeled_features, k):
+    clusters = getClusterValues(k)
+    features = [feature[0] for feature in labeled_features]
+    ac = AgglomerativeClustering(n_clusters=k, affinity='euclidean', linkage='complete')
+    y_ac = ac.fit_predict(features)
+    pos = 0
+    print(y_ac)
+    print(len(y_ac))
+    for value in y_ac:
+        clusters[value].append(labeled_features[pos])
+        pos += 1
+    return clusters
 
 
 def getClusterValues(k):
