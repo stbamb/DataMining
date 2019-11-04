@@ -9,6 +9,8 @@
 import math
 import random
 
+from sklearn.cluster import KMeans
+
 import config
 
 
@@ -142,3 +144,22 @@ def getStopConditions(old_clusters, new_clusters, old_centroids, new_centroids, 
     if iteration >= config.MAX_NUMBER_OF_ITERATIONS:
         continue_clustering = not continue_clustering
     return old_clusters != new_clusters, old_centroids != new_centroids, continue_clustering
+
+
+def sklearnClustering(labeled_features, k):
+    clusters = getClusterValues(k)
+    features = [feature[0] for feature in labeled_features]
+    km = KMeans(n_clusters=k, init='random', n_init=1, max_iter=config.MAX_NUMBER_OF_ITERATIONS)
+    y_km = km.fit_predict(features)
+    pos = 0
+    for value in y_km:
+        clusters[value].append(labeled_features[pos])
+        pos += 1
+    return clusters, km.inertia_
+
+
+def getClusterValues(k):
+    sklearn_clusters = []
+    for i in range(k):
+        sklearn_clusters.append([])
+    return sklearn_clusters

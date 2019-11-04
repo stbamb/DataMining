@@ -16,21 +16,34 @@ def main():
     file_names = utils.loadFileNames()
     file_names = file_names[:75]
 
-    if not utils.fileExists(config.OUTPUT_CSV_FILE):
+    mfccs = loadMFCCSValues(file_names)
+    labeled_data = utils.createLabeledData(file_names, mfccs)
+
+    baselinePerformance(labeled_data, config.NUMBER_OF_CLUSTERS)
+
+
+def loadMFCCSValues(file_names):
+    if not utils.fileExists(config.OUTPUT_CSV_FILE):  # if there is no CSV file containing all info
         mfccs = sound_tools.getMFCCS(file_names)
         writing_info = utils.getCSVWriteInfo(file_names, mfccs)
         utils.writeToCSV(writing_info)
-        mfcss = utils.fixArray(mfccs)
-    else:
-        mfccs = utils.loadCSVInfo()
+        return utils.fixArray(mfccs)
+    else:  # if it exists, then just load the values from it instead of computing them again
+        return utils.loadCSVInfo()
 
-    labeled_data = utils.createLabeledData(file_names, mfccs)
 
-    clusters = clustering.k_means_clustering(labeled_data, config.NUMBER_OF_CLUSTERS)
+def baselinePerformance(labeled_data, k):
+    custom_clusters = clustering.k_means_clustering(labeled_data, k)
+    custom_clusters = custom_clusters[0]
+    sklearn_clusters = clustering.sklearnClustering(labeled_data, k)
+    sklearn_clusters = sklearn_clusters[0]
+
+    utils.writeToFile(config.CUSTOM_KMEANS_OUTPUT, custom_clusters)
+    utils.writeToFile(config.SKLEARN_KMEANS_OUTPUT, sklearn_clusters)
 
     if config.VERBOSE:
-        print("clusters\n", clusters)
-        print("len(clusters)", len(clusters))
+        print("custom_clusters:\n", custom_clusters)
+        print("sklearn_clusters:\n", sklearn_clusters)
 
 
 if __name__ == "__main__":

@@ -57,6 +57,23 @@ def loadCSVInfo():
     return rows
 
 
+def writeToFile(output_file, clusters):
+    try:
+        with open(output_file, 'w') as file:
+            file.write(str(len(clusters)) + "\n")
+            for cluster in clusters:
+                i = 1
+                for element in cluster:
+                    file.write(str(element[1]) + ",")
+                    if i == len(cluster):
+                        file.write(str(element[1]))
+                    i += 1
+                file.write("\n")
+        return True
+    except:
+        return False
+
+
 # Not a real function, this was written only because I couldn't figure out what the bug was ¯\_(ツ)_/¯
 def fixArray(mfcss):
     for element in mfcss:

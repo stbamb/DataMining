@@ -9,9 +9,11 @@
 
 NUMBER_OF_FEATURES_TO_EXTRACT = 3
 SRC_FOLDER = "dataTmp/"
-OUTPUT_CSV_FILE = "sound_features.csv"
-CUSTOM_KMEANS_OUTPUT = "custom_kmeans_output.txt"
-SKLEARN_KMEANS_OUTPUT = "sklearn_kmeans_output.txt"
+OUTPUT_FOLDER = "output/"
+OUTPUT_CSV_FILE = OUTPUT_FOLDER + "sound_features.csv"
+CUSTOM_KMEANS_OUTPUT = OUTPUT_FOLDER + "custom_kmeans_output.txt"
+SKLEARN_KMEANS_OUTPUT = OUTPUT_FOLDER + "sklearn_kmeans_output.txt"
+AGGLOMERATIVE_KMEANS_OUTPUT = OUTPUT_FOLDER + "agglomerative_output.txt"
 MAX_NUMBER_OF_ITERATIONS = 5
 NUMBER_OF_CLUSTERS = 2
 VERBOSE = True
