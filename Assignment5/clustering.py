@@ -9,7 +9,7 @@
 import math
 import random
 
-from sklearn.cluster import KMeans, AgglomerativeClustering
+from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
 
 import config
 
@@ -146,6 +146,13 @@ def getStopConditions(old_clusters, new_clusters, old_centroids, new_centroids, 
     return old_clusters != new_clusters, old_centroids != new_centroids, continue_clustering
 
 
+def sklearnDBSCAN(labeled_features):
+    features = [feature[0] for feature in labeled_features]
+    db_default = DBSCAN().fit(features)
+    labels = db_default.labels_
+    print(labels)
+
+
 def sklearnKMeansClustering(labeled_features, k):
     clusters = getClusterValues(k)
     features = [feature[0] for feature in labeled_features]
@@ -164,8 +171,6 @@ def sklearnAgglomerativeClustering(labeled_features, k):
     ac = AgglomerativeClustering(n_clusters=k, affinity='euclidean', linkage='complete')
     y_ac = ac.fit_predict(features)
     pos = 0
-    print(y_ac)
-    print(len(y_ac))
     for value in y_ac:
         clusters[value].append(labeled_features[pos])
         pos += 1

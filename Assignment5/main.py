@@ -14,12 +14,14 @@ import utils
 
 def main():
     file_names = utils.loadFileNames()
-    file_names = file_names[:75]
+    file_names = file_names[900:]
 
     mfccs = loadMFCCSValues(file_names)
     labeled_data = utils.createLabeledData(file_names, mfccs)
 
     baselinePerformance(labeled_data, config.NUMBER_OF_CLUSTERS)
+
+    clustering.sklearnDBSCAN(labeled_data)
 
 
 def loadMFCCSValues(file_names):
@@ -41,7 +43,7 @@ def baselinePerformance(labeled_data, k):
     utils.writeToFile(config.SKLEARN_KMEANS_OUTPUT, sklearn_clusters)
     utils.writeToFile(config.AGGLOMERATIVE_KMEANS_OUTPUT, agglomerative_clusters)
 
-    if config.VERBOSE:
+    if config.DEBUG:
         print("custom_clusters:\n", custom_clusters)
         print("sklearn_clusters:\n", sklearn_clusters)
         print("agglomerative_clusters:\n", agglomerative_clusters)

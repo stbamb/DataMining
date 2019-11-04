@@ -7,7 +7,7 @@
 # description   : Needed for main.py to run
 # ==============================================================================
 
-NUMBER_OF_FEATURES_TO_EXTRACT = 3
+NUMBER_OF_FEATURES_TO_EXTRACT = 40
 SRC_FOLDER = "dataTmp/"
 OUTPUT_FOLDER = "output/"
 OUTPUT_CSV_FILE = OUTPUT_FOLDER + "sound_features.csv"
