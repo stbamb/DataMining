@@ -64,9 +64,9 @@ def writeToFile(output_file, clusters):
             for cluster in clusters:
                 i = 1
                 for element in cluster:
-                    file.write(str(element[1]) + ",")
+                    file.write(str(element) + ",")
                     if i == len(cluster):
-                        file.write(str(element[1]))
+                        file.write(str(element))
                     i += 1
                 file.write("\n")
         return True

@@ -53,7 +53,12 @@ def k_means_clustering(labeled_features, k):
                           iteration, config.MAX_NUMBER_OF_ITERATIONS))
 
         iteration += 1
-    return new_clusters  # , sse
+
+    new_clusters_labels = []
+    for cluster in new_clusters:
+        labels = [label[1] for label in cluster]
+        new_clusters_labels.append(labels)
+    return new_clusters_labels  # , sse
 
 
 def continueClustering(conditions):
@@ -155,7 +160,7 @@ def sklearnDBSCAN(labeled_features):
     clusters = getClusterValues(unique_values)
     pos = 0
     for value in labels:
-        clusters[value].append(labeled_features[pos])
+        clusters[value].append(labeled_features[pos][1])
         pos += 1
     if config.DEBUG:
         print("DBSCAN labels:\n", labels)
@@ -169,7 +174,7 @@ def sklearnKMeansClustering(labeled_features, k):
     y_km = km.fit_predict(features)
     pos = 0
     for value in y_km:
-        clusters[value].append(labeled_features[pos])
+        clusters[value].append(labeled_features[pos][1])
         pos += 1
     return clusters
 
@@ -181,7 +186,7 @@ def sklearnAgglomerativeClustering(labeled_features, k):
     y_ac = ac.fit_predict(features)
     pos = 0
     for value in y_ac:
-        clusters[value].append(labeled_features[pos])
+        clusters[value].append(labeled_features[pos][1])
         pos += 1
     return clusters
 

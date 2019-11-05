@@ -26,9 +26,21 @@ def main():
     execution_times.append(time.time() - start_time)
     utils.writeToFile(config.DBSCAN_KMEANS_OUTPUT, dbscan_clusters)
 
-    execution_times += baselinePerformance(labeled_data, config.NUMBER_OF_CLUSTERS)
+    results = baselinePerformance(labeled_data, config.NUMBER_OF_CLUSTERS)
+    execution_times += results[1]
 
-    print(execution_times)
+    print("execution_times:\n", execution_times)
+
+    custom_clusters = results[0][0]
+    sklearn_clusters = results[0][1]
+    agglomerative_clusters = results[0][2]
+    custom_clusters = sorted(custom_clusters)
+    sklearn_clusters = sorted(sklearn_clusters)
+    agglomerative_clusters = sorted(agglomerative_clusters)
+
+    print("custom_clusters:\n", custom_clusters)
+    print("sklearn_clusters:\n", sklearn_clusters)
+    print("agglomerative_clusters:\n", agglomerative_clusters)
 
 
 def loadMFCCSValues(file_names):
@@ -69,7 +81,11 @@ def baselinePerformance(labeled_data, k):
         print("agglomerative_clusters:\n", agglomerative_clusters)
 
     # [time1, time2, time3] # time1 = CUSTOM K-MEANS, time2 = SKLEARN K-MEANS, time3 = # SKLEARN AGGLOMERATIVE
-    return execution_times
+    return [custom_clusters, sklearn_clusters, agglomerative_clusters], execution_times
+
+
+def goodPerformance():
+    return
 
 
 if __name__ == "__main__":
