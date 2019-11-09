@@ -10,7 +10,7 @@
 NUMBER_OF_FEATURES_TO_EXTRACT = 40
 SRC_FOLDER = "data/"
 OUTPUT_FOLDER = "output/"
-OUTPUT_CSV_FILE = OUTPUT_FOLDER + "sound_features.csv"
+OUTPUT_CSV_FILE = "sound_features.csv"
 CUSTOM_KMEANS_OUTPUT = OUTPUT_FOLDER + "custom_kmeans_output.txt"
 DBSCAN_KMEANS_OUTPUT_DEFAULT_PARAMETERS = OUTPUT_FOLDER + "dbscan_kmeans_output_default_parameters.txt"
 DBSCAN_KMEANS_OUTPUT_EPS = OUTPUT_FOLDER + "dbscan_kmeans_output_eps.txt"
