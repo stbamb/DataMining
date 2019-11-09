@@ -152,9 +152,9 @@ def getStopConditions(old_clusters, new_clusters, old_centroids, new_centroids, 
     return old_clusters != new_clusters, old_centroids != new_centroids, continue_clustering
 
 
-def sklearnDBSCAN(labeled_features):
+def sklearnDBSCAN(labeled_features, eps):
     features = [feature[0] for feature in labeled_features]
-    db_default = DBSCAN()
+    db_default = DBSCAN(eps=eps)
     labels = db_default.fit_predict(features)
     unique_values = len(np.unique(labels))
     clusters = getClusterValues(unique_values)
@@ -198,9 +198,9 @@ def getClusterValues(k):
     return sklearn_clusters
 
 
-def getMatrix(num_elements, c1, c2, c3):
+def getMatrix(num_elements, c1, c2, c3, c4):
     matrix = [[0 for x in range(num_elements)] for y in range(num_elements)]
-    for clusters in zip(c1, c2, c3):
+    for clusters in zip(c1, c2, c3, c4):
         for cluster in clusters:
             for i in range(len(cluster)):
                 for j in range(len(cluster)):
