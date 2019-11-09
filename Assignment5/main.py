@@ -38,9 +38,12 @@ def main():
     sklearn_clusters = sorted(sklearn_clusters)
     agglomerative_clusters = sorted(agglomerative_clusters)
 
-    print("custom_clusters:\n", custom_clusters)
-    print("sklearn_clusters:\n", sklearn_clusters)
-    print("agglomerative_clusters:\n", agglomerative_clusters)
+    if config.VERBOSE:
+        print("custom_clusters:\n", custom_clusters)
+        print("sklearn_clusters:\n", sklearn_clusters)
+        print("agglomerative_clusters:\n", agglomerative_clusters)
+
+    goodPerformance(file_names, custom_clusters, sklearn_clusters, agglomerative_clusters)
 
 
 def loadMFCCSValues(file_names):
@@ -84,8 +87,15 @@ def baselinePerformance(labeled_data, k):
     return [custom_clusters, sklearn_clusters, agglomerative_clusters], execution_times
 
 
-def goodPerformance():
-    return
+def goodPerformance(file_names, custom_clusters, sklearn_clusters, agglomerative_clusters):
+    length = [file_name for a in custom_clusters for file_name in a]
+    custom_clusters = utils.getIndexes(file_names, custom_clusters)
+    sklearn_clusters = utils.getIndexes(file_names, sklearn_clusters)
+    agglomerative_clusters = utils.getIndexes(file_names, agglomerative_clusters)
+
+    matrix = clustering.getMatrix(len(length), custom_clusters, sklearn_clusters, agglomerative_clusters)
+
+    utils.writeMatrixToCSV(length, matrix)
 
 
 if __name__ == "__main__":

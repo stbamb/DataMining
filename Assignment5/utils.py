@@ -87,3 +87,25 @@ def createLabeledData(file_names, mfccs):
         labeled_tuple = mfccs[i], file_names[i]
         labeled_data.append(labeled_tuple)
     return labeled_data
+
+
+def getIndexes(file_names, clusters):
+    indexes_clusters = []
+    for cluster in clusters:
+        indexes = []
+        for element in cluster:
+            indexes.append(file_names.index(element))
+        indexes_clusters.append(indexes)
+    return indexes_clusters
+
+
+def writeMatrixToCSV(file_names, matrix):
+    i = 0
+    matrix.insert(i, file_names)
+    for row in matrix:
+        row.insert(0, file_names[i])
+        i += 1
+    with open(config.MATRIX_OUTPUT, 'w', newline='') as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerows(matrix)
+    csv_file.close()

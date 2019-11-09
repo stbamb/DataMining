@@ -196,3 +196,13 @@ def getClusterValues(k):
     for i in range(k):
         sklearn_clusters.append([])
     return sklearn_clusters
+
+
+def getMatrix(num_elements, c1, c2, c3):
+    matrix = [[0 for x in range(num_elements)] for y in range(num_elements)]
+    for clusters in zip(c1, c2, c3):
+        for cluster in clusters:
+            for i in range(len(cluster)):
+                for j in range(len(cluster)):
+                    matrix[cluster[i]][cluster[j]] += 1
+    return matrix

@@ -15,6 +15,7 @@ CUSTOM_KMEANS_OUTPUT = OUTPUT_FOLDER + "custom_kmeans_output.txt"
 DBSCAN_KMEANS_OUTPUT = OUTPUT_FOLDER + "dbscan_kmeans_output.txt"
 SKLEARN_KMEANS_OUTPUT = OUTPUT_FOLDER + "sklearn_kmeans_output.txt"
 AGGLOMERATIVE_KMEANS_OUTPUT = OUTPUT_FOLDER + "agglomerative_output.txt"
+MATRIX_OUTPUT = OUTPUT_FOLDER + "matrix.csv"
 MAX_NUMBER_OF_ITERATIONS = 5
 NUMBER_OF_CLUSTERS = 3
 VERBOSE = True
