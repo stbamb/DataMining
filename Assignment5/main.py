@@ -33,6 +33,7 @@ def main():
 
     results = baselinePerformance(labeled_data, k)
     execution_times += results[1]
+    execution_times = ["%.4f" % member for member in execution_times]
 
     custom_clusters = results[0][0]
     sklearn_clusters = results[0][1]
